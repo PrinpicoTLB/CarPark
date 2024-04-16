@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /depot-system
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/carport?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  redis:
+    port: 6379
+    host: 127.0.0.1
+    password: 123456
+    jedis:
+      pool:
+        max-wait: 300
+        max-active: 600
+        max-idle: 300
+
+mybatis:
+  type-aliases-package: com.yxq.carpark.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    interceptor: pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+#pagehelper:
+#  helper-dialect: mysql
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
