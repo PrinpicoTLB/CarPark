@@ -6,18 +6,18 @@
 	insert into email(sendid,toid,title,content,time) values(#{sendid},#{toid},#{title},#{content},#{time})
 </insert>
 <select id="findById" resultType="com.yxq.carpark.entity.Email">
-	select * from email t where t.id=#{id} 
+	select * from email t where t.id=#{id}
 </select>
 <select id="findByToId" resultType="com.yxq.carpark.dto.EmailData">
-	select * from email t where t.toid=#{id} 
+	select * from email t where t.toid=#{id} order by t.time DESC
 </select>
 <update id="updateManReadById">
 	update email set managerisread=1 where id=#{id}
 </update>
 <select id="findByUserId" resultType="com.yxq.carpark.dto.EmailData">
-	select t.* from email t where 1=1 
+	select t.* from email t where 1=1
 	<if test="role==3">
-		and (sendid =#{uid} or toid=#{uid}) and userdeleted=0 and title like '%${content}%'  
+		and (sendid =#{uid} or toid=#{uid}) and userdeleted=0 and title like '%${content}%'
 		<if test="tag==0">
 		and userisread=0 and sendid!=#{uid}
 		</if>
@@ -30,7 +30,7 @@
 		order by userisread,time asc limit #{page},#{size}
 	</if>
 	<if test="role!=3">
-		and (sendid=#{uid} or toid=0) and managedelete=0 and title like '%${content}%' 
+		and (sendid=#{uid} or toid=0) and managedelete=0 and title like '%${content}%'
 		<if test="tag==0">
 		and managerisread=0 and sendid !=#{uid}
 		</if>
@@ -42,14 +42,14 @@
 		</if>
 		order by managerisread,time asc limit #{page},#{size}
 	</if>
-</select> 
+</select>
 <select id="findAllEmailCountByUser" resultType="int">
 	select count(*) from email t where 1=1
 	<if test="role==3">
-		and (sendid =#{uid} or toid=#{uid}) and userdeleted=0 
+		and (sendid =#{uid} or toid=#{uid}) and userdeleted=0
 	</if>
 	<if test="role!=3">
-		and (sendid=#{uid} or toid=0)  and managedelete=0 
+		and (sendid=#{uid} or toid=0)  and managedelete=0
 	</if>
 </select>
 <update id="updateEmail" parameterType="com.yxq.carpark.entity.Email">

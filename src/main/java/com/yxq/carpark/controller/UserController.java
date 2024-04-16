@@ -37,9 +37,9 @@ public class UserController {
 		User user = userService.findByphone(tel);
 		if(user==null)
 		{
-			return Msg.fail().add("va_msg", "�û���������");
+			return Msg.fail();
 		}
-		return Msg.success();
+		return Msg.success().add("va_msg", "手机号已经存在");
 	}
 
 	@RequestMapping("/index/user/register")
@@ -58,11 +58,11 @@ public class UserController {
 			User user=userService.findUserByUsername(username);
 			if(user==null)
 			{
-				return Msg.fail().add("va_msg", "�û���������");
+				return Msg.fail().add("va_msg", "用户名不存在");
 			}
 			return Msg.success();
 		}
-		
+
 		//���user
 		@ResponseBody
 		@RequestMapping("/index/user/addUser")
@@ -77,7 +77,7 @@ public class UserController {
 			}
 				return Msg.success().add("va_msg", "��ӳɹ���");
 		}
-		
+
 		//����user
 		@ResponseBody
 		@RequestMapping("/index/user/findUserById")
@@ -92,9 +92,9 @@ public class UserController {
 				User currentUser=(User) httpSession.getAttribute("user");
 				return Msg.success().add("user",user).add("role", currentUser.getRole());
 			}
-			
+
 		}
-		
+
 		//�༭user
 		@ResponseBody
 		@RequestMapping("/index/user/editUser")
@@ -114,7 +114,7 @@ public class UserController {
 			}
 				return Msg.success().add("va_msg", "�޸ĳɹ���");
 		}
-		
+
 		//ɾ��user
 		@ResponseBody
 		@RequestMapping("/index/user/deleteUser")
@@ -149,5 +149,5 @@ public class UserController {
 				return Msg.fail().add("va_msg", "ɾ��ʧ�ܣ�");
 			}
 		}
-				
+
 }

@@ -8,12 +8,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.yxq.carpark.vo.IncomeDataVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,13 +66,13 @@ public class IndexController {
 	private IllegalInfoService illegalInfoService;
 	@Autowired
 	private IncomeService incomeService;
-	@Autowired 
+	@Autowired
 	private CouponService couponService;
 	@Autowired
 	private EmailService emailService;
 	@Autowired
 	private DepotInfoService depotInfoService;
-	
+
 	@RequestMapping("/index/toindex")
 	public String toIndex(Model model,HttpSession session,@RequestParam(value="tag",required=false) Integer tag,@RequestParam(value="page",required=false) Integer page)
 	{
@@ -118,7 +120,7 @@ public class IndexController {
 				}
 				count=parkspaceService.findAllParkspaceCount(tag);
 			}else {
-				
+
 			}
 			countPage=count/10;
 			if(count%10!=0)
@@ -134,7 +136,7 @@ public class IndexController {
 			return "login";
 		}
 	}
-	
+
 	@RequestMapping("/index/findAllUser")
 	public String findAllUser(Model model, HttpSession session,@RequestParam(value="tag",required=false) Integer tag,@RequestParam(value="page",required=false) Integer page)
 	{
@@ -186,7 +188,7 @@ public class IndexController {
 		model.addAttribute("users", pageUtil);
 		return "user";
 	}
-	
+
 	@RequestMapping("/index/findAllDepot")
 	public String findAllDepot(Model model, HttpSession session,@RequestParam(value="page",required=false) Integer page,@RequestParam(value="name",required=false) String name)
 	{
@@ -239,7 +241,7 @@ public class IndexController {
 		model.addAttribute("parkinfoallDatas", pageUtil);
 		return "depot";
 	}
-	
+
 	@RequestMapping("/index/findAllIllegalinfo")
 	public String findAllIllegalinfo(Model model, HttpSession session,@RequestParam(value="page",required=false) Integer page,@RequestParam(value="name",required=false)String name)
 	{
@@ -271,7 +273,7 @@ public class IndexController {
 			} else if (user1.getRole() == 3) {
 				illegalInfo=illegalInfoService.findByUid(user1.getId());
 				count=illegalInfo.size();
-			} 
+			}
 		}
 		System.out.println("illegalInfo :" + illegalInfo.size());
 		System.out.println("illegalInfo count:" + count);
@@ -288,7 +290,7 @@ public class IndexController {
 		model.addAttribute("illegalInfo", pageUtil);
 		return "illegalinfo";
 	}
-	
+
 	@RequestMapping("/index/toDepotcardIndex")
 	public String findAllDepotcard(Model model, HttpSession session,@RequestParam(value="cardnum",required=false)String cardnum,@RequestParam(value="page",required=false) Integer page)
 	{
@@ -320,7 +322,7 @@ public class IndexController {
 			} else if (user1.getRole() == 3) {
 				depotcardManagerDatas = depotcardService.findByCardId(user1.getCardid());
 				count=depotcardManagerDatas.size();
-			} 
+			}
 		}
 		countPage=count/10;
 		if(count%10>0)
@@ -335,7 +337,7 @@ public class IndexController {
 		model.addAttribute("depotcardManagerDatas", pageUtil);
 		return "depotcard";
 	}
-	
+
 	@RequestMapping("/index/findAllCoupon")
 	public String findAllCoupon(Model model, HttpSession session,@RequestParam(value="page",required=false) Integer page,@RequestParam(value="name",required=false) String name)
 	{
@@ -417,16 +419,28 @@ public class IndexController {
 			num=9;
 		}
 		List<IncomeData> incomes=null;
+		List<IncomeDataVo> incomeDataVos = new ArrayList<>();
 		List<IncomeData> incomes1=null;
 		User user1 = (User) session.getAttribute("user");
-		PageUtil<IncomeData> pageUtil=new PageUtil<IncomeData>();
+		PageUtil<IncomeDataVo> pageUtil=new PageUtil<IncomeDataVo>();
 		int count =0;
 		int countPage=0;
 		double countMoney=0;
 		if (user1 != null) {
 			if (user1.getRole() == 1) {
 				incomes = incomeService.findAllIncome(page*10,Constants.PAGESIZE,content,startTime,endTime,num);
+				if(incomes != null) {
+					System.out.println("incomes size: " + incomes.size());
+					incomes.forEach(incomeData -> {
+						IncomeDataVo incomeDataVo = new IncomeDataVo();
+						BeanUtils.copyProperties(incomeData, incomeDataVo);
+						String duration = formatDuration(incomeData.getDuration());
+						incomeDataVo.setDuration(duration);
+						incomeDataVos.add(incomeDataVo);
+					});
+				}
 				incomes1 = incomeService.findAllIncome(content,startTime,endTime,num);
+
 				if(incomes1.size()>0){
 				for(IncomeData incomeData:incomes1)
 				{
@@ -442,12 +456,20 @@ public class IndexController {
 				pageUtil.setCurrent(page);
 				pageUtil.setCount(count);
 				pageUtil.setCountPage(countPage);
-				pageUtil.setPages(incomes);
-			} 
+				pageUtil.setPages(incomeDataVos);
+			}
 		}
 		model.addAttribute("incomes", pageUtil);
 		model.addAttribute("countMoney", countMoney);
 		return "income";
+	}
+
+	public static String formatDuration(long minutes) {
+		int days = (int) (minutes / (24 * 60)); // 计算全天数
+		int hours = (int) ((minutes % (24 * 60)) / 60); // 计算剩余的小时数
+		int remainingMinutes = (int) (minutes % 60); // 计算剩余的分钟数
+
+		return String.format("%d天%d时%d分钟", days, hours, remainingMinutes);
 	}
 	@RequestMapping("/index/findAllEmail")
 	public String findAllEmail(Model model, HttpSession session,@RequestParam(value="page", required=false) Integer page,@RequestParam(value="content", required=false) String content,@RequestParam(value="tag", required=false) Integer tag)
@@ -522,29 +544,29 @@ public class IndexController {
 		model.addAttribute("tag", tag);
 		return "email";
 	}
-	
+
 	@RequestMapping("/index/system")
 	public String system(Model model, HttpSession session)
 	{
 		return "system";
 	}
-	
+
 	@RequestMapping("/index/incomeCharts")
 	public String incomeCharts()
 	{
 		return "incomeCharts";
 	}
-	
+
 	@RequestMapping("/index/line")
 	public String line()
 	{
 		return "indexcopy";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/index/incomeCharts1")
 	public IncomeCharts incomeCharts1()
-	{	
+	{
 		int weixin=incomeService.findPayByType(0);
 		int zhifubao=incomeService.findPayByType(1);
 		int cash=incomeService.findPayByType(2);
@@ -555,7 +577,7 @@ public class IndexController {
 	//	System.out.println(weixin+"�ȵ�"+zhifubao+"�ȵ�"+cash);
 		return incomeCharts;
 	}
-	
+
 	//ͣ�����
 	@ResponseBody
 	@RequestMapping("/index/line1")
@@ -566,9 +588,9 @@ public class IndexController {
 		nowParkspace.setIspark(ispark);
 		nowParkspace.setNopark(nopark);
 		return nowParkspace;
-		
+
 	}
-	
+
 	@RequestMapping("/index/exit")
 	public String exit(Model model, HttpSession session)
 	{
@@ -636,7 +658,7 @@ public class IndexController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@RequestMapping("/index/setSystem")
 	@ResponseBody
 	public Msg setSystem(ChargeData chargeData)
@@ -665,5 +687,5 @@ public class IndexController {
 		depotInfoService.update(chargeData);
 		return Msg.success();
 	}
-	
+
 }

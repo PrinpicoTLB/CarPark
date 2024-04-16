@@ -70,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const isExist = await checkUsernameExist(username);
             console.log('isExist', isExist)
             if (isExist) {
-                showError('username', '�û��Ѵ��ڡ�');
+                usernameElement.value = "";
+                showError('username', '用户已存在.');
                 //document.getElementById('usernameIcon').className = 'validation-icon invalid';
                 validUsername = '';
                 console.log(validUsername);
@@ -81,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('validUsername', validUsername);
             }
         } else {
-            showError('username', "ֻ������ĸ�����ֺ��»��ߣ��ҳ����� 4 �� 16 ���ַ�֮��")
+            showError('username', "长度在8以内的中英文字符")
             //document.getElementById("usernameIcon").className = 'validation-icon invalid';
             validUsername = '';
             console.log(validUsername);
@@ -94,12 +95,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const name = nameElement.value;
         console.log(name)
         if (inputRegexMap.name.test(name)) {
-            hideError('username');
+            hideError('name');
             //document.getElementById('usernameIcon').className = 'validation-icon valid';
             validName = name;
             console.log('name', validName);
         } else {
-            showError('name', "�����ʽ�Ƿ���ȷ")
+            nameElement.value = "";
+            showError('name', "请检查格式是否正确")
             //document.getElementById("usernameIcon").className = 'validation-icon invalid';
             validName = '';
             console.log(name);
@@ -123,14 +125,14 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetchWithTimeout("/depot-system/index/user/checkUsername?username=" + encodeURIComponent(username), { method: 'GET' })
             if (!response.ok) {
-                alert('�����쳣��������һ��')
-                throw new Error('�����쳣��������һ��');
+                alert('网络异常，请再试一次')
+                throw new Error('网络异常，请再试一次');
             }
             //const response = await fetch("/userName?username=" + encodeURIComponent(username));
             const jsonReadear = await response.json();
             console.log("response:", jsonReadear);  // ��ӡ������Ӧ��
-            //console.log("json:", jsonReadear.code);
-            if (jsonReadear.code === 100) {
+            console.log("code:", jsonReadear.code);
+            if (jsonReadear.code === 200) {
                 const isExist = false;
                 return isExist;
             } else {
@@ -169,10 +171,10 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(validPassword);
 
         } else {
-            showError('password', '�������������� 8 ���ַ�,������д��Сд������.');
+            showError('password', '密码必须包含至少 8 个字符,包括大写、小写和数字.');
             //document.getElementById('passwordIcon').className = 'validation-icon invalid';
             validPassword = '';
-            console.log(validPassword + '����');
+            console.log(validPassword + '错误');
         }
     });
 
@@ -185,7 +187,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const isExist = await checkPhoneOrEmailExist(phoneOrEmail);
 
             if (isExist) {
-                showError('phoneOrEmail', '�û��Ѵ���.');
+                phoneOrEmailElement.value = "";
+                showError('phoneOrEmail', '手机号已存在.');
                 //document.getElementById('phoneOrEmailIcon').className = 'validation-icon invalid';
                 validPhoneOrEmail = '';
                 console.log(validPhoneOrEmail);
@@ -196,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(validPhoneOrEmail);
             }
         } else {
-            showError('phoneOrEmail', '��������ȷ���ֻ��Ż������ʽ.');
+            showError('phoneOrEmail', '请输入正确的手机号.');
             //document.getElementById('phoneOrEmailIcon').className = 'validation-icon invalid';
             validPhoneOrEmail = '';
             console.log(validPhoneOrEmail);
@@ -213,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 response = await fetchWithTimeout("/depot-system/index/user/phone?tel=" + phoneOrEmail, { method: 'GET' });
             }
             if (response && !response.ok) {
-                alert('�����쳣��������һ��')
+                alert('请求失败，请重试')
                 throw new Error('�����쳣��������һ��');
             }
             //const response = await fetch("/userName?username=" + encodeURIComponent(username));

@@ -24,12 +24,12 @@
 						</div>
 						<!-- /input-group -->
 					</div>
-						
+
 					<div class="dropdown" style="float: right; margin-right: 10%">
-				
+
 		<!-- <button onclick="findByCondition()" class="btn btn-default" type="button">收入分析</button> -->
 				<input type="button" value="收入分析" onclick="newDoc()" class="btn btn-default">
-				
+
 			<button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
 				data-toggle="dropdown">
 				<span id="income_method">收入方式</span><span class="caret"></span>
@@ -54,6 +54,9 @@
 					<th>违规</th>
 					<td>操作</td>
 				</tr>
+<%--		        <tbody id="incomeTable" data-items="${incomes.pages }">--%>
+<%--		            <!-- 表格行将在这里动态生成 -->--%>
+<%--		        </tbody>--%>
 				<c:forEach items="${incomes.pages }" var="item" varStatus="status">
 					<tr>
 						<td>${status.index+1 }</td>
@@ -70,7 +73,7 @@
 					</c:forEach>
 			</table>
 			<ul class="pagination">
-				
+
 				<li><a href="${APP_PATH }/index/findAllIncome?tag=${incomes.tag}&&page=${incomes.current}"
 				target="main"
 					onclick="$('div#main').load(this.href);return false;">&laquo;</a></li>
@@ -91,8 +94,39 @@
 			<div style="float: right;margin-right: 6%">
 					总收入：${countMoney}元<br>
 					</div>
-</form>		
+</form>
 <script type="text/javascript">
+	<%--document.addEventListener('DOMContentLoaded', function () {--%>
+	<%--	const tableBody = document.getElementById('incomeTable');--%>
+	<%--	const itemsData = tableBody.getAttribute('data-items');--%>
+	<%--	console.log("itemsData", itemsData);--%>
+	<%--	const incomesData = JSON.parse(itemsData);--%>
+	<%--	console.log("incomesData", incomesData);--%>
+
+	<%--	incomesData.forEach((item, index) => {--%>
+	<%--		const formattedDuration = formatDuration(item.duration);--%>
+	<%--		console.log("formattedDuration", formattedDuration);--%>
+	<%--		const row = `<tr>--%>
+    <%--        <td>${index + 1}</td>--%>
+    <%--        <td>${item.carnum}</td>--%>
+    <%--        <td>${item.cardnum}</td>--%>
+    <%--        <td>${item.money}</td>--%>
+    <%--        <td>${item.method == 0 ? '现金' : item.method == 1 ? '支付宝' : item.method == 2 ? '微信' : '扣卡费'}</td>--%>
+    <%--        <td>${item.source == 0 ? '充值' : '出库'}</td>--%>
+    <%--        <td>${item.time}</td>--%>
+    <%--        <td>${formattedDuration}</td>--%>
+    <%--        <td>${item.isillegal}</td>--%>
+    <%--        <td><input class="btn btn-default" type="button" onclick="findIncomeInfo(${item.id})" value="查看"></td>--%>
+    <%--    </tr>`;--%>
+	<%--		tableBody.innerHTML += row;--%>
+	<%--	});--%>
+	<%--});--%>
+	<%--function formatDuration(minutes) {--%>
+	<%--	const days = Math.floor(minutes / (24 * 60));--%>
+	<%--	const hours = Math.floor((minutes % (24 * 60)) / 60);--%>
+	<%--	const remainingMinutes = minutes % 60;--%>
+	<%--	return `${days}天${hours}时${remainingMinutes}分钟`;--%>
+	<%--}--%>
 $('#datetimepickerStart').datetimepicker({
     format: 'yyyy-mm-dd hh:ii'
 });
@@ -159,7 +193,7 @@ $('#datetimepickerEnd').datetimepicker({
 			}
 		})
 	}
-	
+
 	function findByCondition()
 	{
 		var datetimepickerStart=$("#datetimepickerStart").val();
@@ -178,7 +212,7 @@ $('#datetimepickerEnd').datetimepicker({
  {
  window.location.assign("http://localhost:8080/depot-system/index/incomeCharts")
  }
-	
+
 	function chooseMethod(item)
 	{
 		if(item==0)

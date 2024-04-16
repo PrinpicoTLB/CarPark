@@ -46,7 +46,7 @@ public class CheckController {
 	private ParkspaceService parkspaceService;
 	@Autowired
 	private DepotcardService depotcardService;
-	@Autowired 
+	@Autowired
 	private UserService userService;
 	@Autowired
 	private IllegalInfoService illegalInfoService;
@@ -56,7 +56,7 @@ public class CheckController {
 	private IncomeService incomeService;
 	@Autowired
 	private CouponService couponService;
-	
+
 	static int i=0;
 	@RequestMapping("/index/check/checkIn")
 	@ResponseBody
@@ -143,7 +143,7 @@ public class CheckController {
 				}
 				money-=pay_money;
 				depotcardService.addMoney(depotcard.getCardnum(),money);
-				/*Income income=new Income();
+				Income income=new Income();
 				income.setMoney(pay_money);
 				income.setMethod(data.getPayid());
 				income.setCardnum(data.getCardNum());
@@ -154,16 +154,16 @@ public class CheckController {
 					income.setIsillegal(1);
 				}
 				income.setSource(1);
-				income.setTime(parkout);*/
-				/*Date parkin=parkInfo.getParkin();
+				income.setTime(parkout);
+				Date parkin=parkInfo.getParkin();
 				long day=parkout.getTime()-parkin.getTime();
 				long time=day/(1000*60);
-				if(day%(1000*60)>0){
-				time+=1;
-				}
+//				if(day%(1000*60)>0){
+//				time+=1;
+//				}
 				income.setDuration(time);
 				income.setTrueincome(1);
-				incomeService.save(income);*/
+				incomeService.save(income);
 			}else{
 				//�¿����꿨����
 			}
@@ -187,7 +187,7 @@ public class CheckController {
 		ParkInfo parkInfo = parkinfoservice.findParkinfoByParknum(parknum);
 		return Msg.success().add("parkInfo", parkInfo);
 	}
-	
+
 	@RequestMapping("/index/check/findParkinfoByCardnum")
 	@ResponseBody
 	// ����ͣ��λ��/���ƺŲ���ͣ��λ��Ϣ
@@ -195,12 +195,12 @@ public class CheckController {
 		ParkInfo parkInfo = parkinfoservice.findParkinfoByCardnum(cardnum);
 		//System.out.println("ello"+parkInfo.getId());
 		if(parkInfo!=null)
-		{ 
+		{
 			return Msg.success().add("parkInfo", parkInfo);
 		}
 		return Msg.fail();
 	}
-	
+
 	@RequestMapping("/index/check/findParkinfoDetailByParknum")
 	@ResponseBody
 	//����ͣ��λ�Ų���ͣ����ϸ��Ϣ
@@ -227,7 +227,7 @@ public class CheckController {
 		}
 		return Msg.success().add("parkInfo", parkInfo).add("user", user).add("parkin", parkin);
 	}
-	
+
 	@RequestMapping("/index/check/illegalSubmit")
 	@ResponseBody
 	//Υ���ύ
@@ -264,29 +264,29 @@ public class CheckController {
 		}*/
 		//info.setUsername(user.getUsername());
 		info.setIllegalInfo(data.getIllegalInfo());
-		
+
 	//	info.setUsername(data.get);
 	//	info.setUid(currentUser.getId());
 		//info.setUid(user.getId());
-		info.setUid(0);
+		info.setUid(currentUser.getId());
 		Date date=new Date();
 		info.setTime(date);
-		
+
 		info.setParkin(parkInfo.getParkin());
-		
+
 		info.setDelete("N");
-		
+
 		try {
-			
+
 		illegalInfoService.save(info);
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Msg.fail().add("va_msg", "���ʧ��");
 		}
 		return Msg.success().add("va_msg", "��ӳɹ�");
 	}
-	
+
 	/*�Ƿ���Ҫ֧��
 	 * type:0�������۷�
 	 * type:1���¿��꿨û����*/

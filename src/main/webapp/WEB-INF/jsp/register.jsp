@@ -23,7 +23,7 @@
 
 <!-- Logo 标志 -->
 <div class="logo-container">
-  <img src="" alt="Logo">
+  <img src="${APP_PATH }/assets/svg/logo.svg" alt="Logo">
 </div>
 
 <div class="register-container">

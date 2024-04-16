@@ -5,7 +5,7 @@
 		SELECT * from parkinfoall limit #{page},#{size}
 	</select>
 	<select id="findAllParkinfoallByLike" resultType="com.yxq.carpark.dto.ParkinfoallData">
-		SELECT * from parkinfoall t where t.cardnum like '%${name}%' || t.carnum like '%${name}%' || t.parknum like '%${name}%' limit #{page},#{size}
+		SELECT * from parkinfoall t where t.cardnum like '%${name}%' || t.carnum like '%${name}%' || t.parknum like '%${name}%' order by t.parkout DESC limit #{page},#{size}
 	</select>
 	<insert id="save">
 		insert into parkinfoall (cardnum,parknum,carnum,parkin,parkout,parktemp) values(#{cardnum},#{parknum},#{carnum},#{parkin},#{parkout},#{parktemp})
@@ -17,16 +17,17 @@
 		SELECT count(*) from parkinfoall t where t.cardnum like '%${name}%' || t.carnum like '%${name}%' || t.parknum like '%${name}%'
 	</select>
 	<select id="findByCardNum" resultType="com.yxq.carpark.dto.ParkinfoallData">
-		SELECT * from parkinfoall t where t.cardnum = #{cardnum} 
+		SELECT * from parkinfoall t where t.cardnum = #{cardnum}
 		<if test="name!=''">
 		and t.carnum like '%${name}%'
 		</if>
 	</select>
 	<select id="findByCardNumByPage" resultType="com.yxq.carpark.dto.ParkinfoallData">
-		SELECT * from parkinfoall t where t.cardnum = #{cardnum} 
+		SELECT * from parkinfoall t where t.cardnum = #{cardnum}
 		<if test="name!=''">
 		and t.carnum like '%${name}%'
 		</if>
+		order by t.parkout DESC
 		limit #{page},#{size}
 	</select>
 	<update id="updateCardnum">

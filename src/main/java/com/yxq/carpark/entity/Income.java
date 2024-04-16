@@ -9,13 +9,22 @@ public class Income implements Serializable{
 	private double money;
 	private int  method;
 	private int type;
+	private int trueincome;
 	private String carnum;
 	private String cardnum;
 	private int isillegal;
 	private int source=1;
 	private Date time;
 	private long duration;
-	
+
+	public int getTrueincome() {
+		return trueincome;
+	}
+
+	public void setTrueincome(int trueincome) {
+		this.trueincome = trueincome;
+	}
+
 	public long getDuration() {
 		return duration;
 	}
@@ -76,5 +85,5 @@ public class Income implements Serializable{
 	public void setTime(Date time) {
 		this.time = time;
 	}
-	
+
 }
