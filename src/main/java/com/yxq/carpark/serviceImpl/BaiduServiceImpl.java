@@ -107,17 +107,4 @@ public class BaiduServiceImpl implements BaiduService {
     }
 
 
-    public static void main(String[] args) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime localDateTime = now.plusDays(30);
-        writeConfig("asdpl");
-        BaiduConfig baiduConfig = readConfig();
-        String expireIn = baiduConfig.getExpireIn();
-        long expireLong = Long.parseLong(expireIn);
-        long epochSecond = now.toEpochSecond(ZoneOffset.UTC);
-        System.out.println(expireLong - epochSecond);
-        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        System.out.println(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-
-    }
 }
