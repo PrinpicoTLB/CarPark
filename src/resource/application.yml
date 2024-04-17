@@ -23,6 +23,14 @@ spring:
         max-active: 600
         max-idle: 300
 
+licensePlate:
+  baidu:
+    base_url: https://aip.baidubce.com
+    get_token: /oauth/2.0/token
+    license_plate: /rest/2.0/ocr/v1/license_plate
+    client_id: 填入API Key
+    client_secret: 填入Secret Key
+
 mybatis:
   type-aliases-package: com.yxq.carpark.entity
   mapper-locations: classpath:mapper/*.xml

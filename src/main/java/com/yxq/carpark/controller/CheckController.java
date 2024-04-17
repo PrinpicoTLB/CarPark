@@ -158,9 +158,9 @@ public class CheckController {
 				Date parkin=parkInfo.getParkin();
 				long day=parkout.getTime()-parkin.getTime();
 				long time=day/(1000*60);
-//				if(day%(1000*60)>0){
-//				time+=1;
-//				}
+				if(day%(1000*60)>0){
+				time+=1;
+				}
 				income.setDuration(time);
 				income.setTrueincome(1);
 				incomeService.save(income);

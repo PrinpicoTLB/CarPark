@@ -4,48 +4,38 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yxq.carpark.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sun.istack.logging.Logger;
 import com.yxq.carpark.dto.FormData;
 import com.yxq.carpark.entity.ParkInfo;
 import com.yxq.carpark.entity.Result;
-import com.yxq.carpark.service.CouponService;
-import com.yxq.carpark.service.DepotcardService;
-import com.yxq.carpark.service.IllegalInfoService;
-import com.yxq.carpark.service.IncomeService;
-import com.yxq.carpark.service.ParkinfoService;
-import com.yxq.carpark.service.ParkinfoallService;
-import com.yxq.carpark.service.ParkspaceService;
-import com.yxq.carpark.service.PlateRecognise;
-import com.yxq.carpark.service.UserService;
 import com.yxq.carpark.serviceImpl.PlateRecogniseImpl;
 
 @Controller
 public class ImageRPController {
-	
+
 	private static final Logger logger = Logger.getLogger(ImageRPController.class);
-	
+
 	@Autowired
 	private ParkinfoService parkinfoservice;
 	@Autowired
 	private ParkspaceService parkspaceService;
 	@Autowired
 	private DepotcardService depotcardService;
-	@Autowired 
+	@Autowired
 	private UserService userService;
 	@Autowired
 	private IllegalInfoService illegalInfoService;
@@ -55,7 +45,9 @@ public class ImageRPController {
 	private IncomeService incomeService;
 	@Autowired
 	private CouponService couponService;
-	
+	@Autowired
+	private BaiduService baiduService;
+
 	@RequestMapping(value = "/fileUpload")
 	public String fileLpload() {
 
@@ -108,14 +100,14 @@ public class ImageRPController {
 		return new Result(-1, responses, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 	}
 
-	
-	@RequestMapping(value = "/fileUpload1")
+
+	@PostMapping(value = "/fileUpload1")
 	public String upload(@RequestParam("file") MultipartFile file,@RequestParam("id")int id,HttpServletResponse response,HttpServletRequest request) {
 		int parkId=id;
 		ParkInfo parkInfo=new ParkInfo();
 		FormData formData=new FormData();
 		System.out.println(parkId);
-	
+
 		String fileName = file.getOriginalFilename();
 		@SuppressWarnings("unused")
 		String suffixName = fileName.substring(fileName.lastIndexOf("."));
@@ -125,24 +117,14 @@ public class ImageRPController {
 		if (!dest.getParentFile().exists()) {
 			dest.getParentFile().mkdirs();
 		}
-	
+
 			try {
 				file.transferTo(dest);
-				PlateRecognise plateRecognise = new PlateRecogniseImpl();
 				String img = filePath + fileName;
 				logger.info(img);
-				List<String> res = plateRecognise.plateRecognise(filePath + fileName);
-				if (res.size() < 1 || res.contains("")) {
-					logger.info("ʶ��ʧ�ܣ����绻��ͼƬ���ԣ�");
-					
-					//return Msg.fail().add("va_msg", "�������");
-					response.setHeader("refresh", "6;url="+request.getContextPath()+"/index/toindex");
-					return "error";
-					//response.setHeader("refresh", "5;url=/index/toindex");
-					//return "redirect:/index/toindex";
-				}
-				String carNum=res.get(0);
-				Result result = new Result(201, plateRecognise.plateRecognise(filePath + fileName),
+
+				String carNum = baiduService.licensePlate(img);
+				Result result = new Result(201, Collections.emptyList(),
 						new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 				logger.info(result.toString());
 				if (depotcardService.findCardnumByCarnum(carNum)!=null) {
@@ -156,7 +138,7 @@ public class ImageRPController {
 					formData.setParkNum(parkId);
 					formData.setParkTem(1);
 				}
-				
+
 				parkinfoservice.saveParkinfo(formData);
 				parkspaceService.changeStatus(parkId, 1);
 				//return "index";
@@ -169,18 +151,18 @@ public class ImageRPController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			return "redirect:/index/toindex";
 	}
-	
-	
+
+
 	@RequestMapping(value = "/fileUpload3")
 	public String upload3(@RequestParam("file") MultipartFile file,@RequestParam("id")int id) throws Exception, IOException {
 		int parkId=id;
 		ParkInfo parkInfo=new ParkInfo();
 		FormData formData=new FormData();
 		System.out.println(parkId);
-	
+
 		String fileName = file.getOriginalFilename();
 		@SuppressWarnings("unused")
 		String suffixName = fileName.substring(fileName.lastIndexOf("."));
@@ -190,7 +172,7 @@ public class ImageRPController {
 		if (!dest.getParentFile().exists()) {
 			dest.getParentFile().mkdirs();
 		}
-	
+
 			file.transferTo(dest);
 			PlateRecognise plateRecognise = new PlateRecogniseImpl();
 			String img = filePath + fileName;
@@ -211,16 +193,16 @@ public class ImageRPController {
 				formData.setParkNum(parkId);
 				formData.setParkTem(1);
 			}
-			
+
 			parkinfoservice.saveParkinfo(formData);
 			parkspaceService.changeStatus(parkId, 1);
 			//return "index";
 			return "redirect:/index/toindex";
 			//return Msg.success();
-	
+
 	}
-	
-	
+
+
 	@RequestMapping(method = RequestMethod.GET, value = "/plateRecognise")
 	public List<String> plateRecognise(@RequestParam("imgPath") String imgPath) {
 		PlateRecognise plateRecognise = new PlateRecogniseImpl();

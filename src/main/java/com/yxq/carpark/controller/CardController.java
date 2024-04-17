@@ -48,16 +48,16 @@ public class CardController {
 	private CouponService couponService;
 	@Autowired
 	private IllegalInfoService illegalInfoService;
-	@Autowired 
+	@Autowired
 	private ParkinfoService parkinfoService;
-	
+
 	@ResponseBody
 	@RequestMapping("/index/card/findAllCardType")
 	public Msg findAllCardType(){
 		List<CardType> cardTypes=cardtypeService.findAllCardType();
 		return Msg.success().add("cardTypes", cardTypes);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/index/card/addDepotCard")
 	@Transactional
@@ -67,7 +67,7 @@ public class CardController {
 		}
 		Depotcard depotcard=depotcardService.save(depotcardManagerData);
 		double money=depotcardManagerData.getMoney();
-	//	System.out.println(money);
+	    //	System.out.println(money);
 		Income income=new Income();
 		if (depotcard==null) {
 			return Msg.fail().add("va_msg", "�˺��Ѿ����ڣ�");
@@ -95,10 +95,10 @@ public class CardController {
 		income.setSource(0);
 		incomeService.save(income);
 		userService.saveByaddDepotCard(depotcardManagerData.getUsername(), depotcardManagerData.getName(), depotcard.getId());
-			return Msg.success().add("depotcard", depotcard).add("username", depotcardManagerData.getUsername());	
+			return Msg.success().add("depotcard", depotcard).add("username", depotcardManagerData.getUsername());
 	}
-	
-	
+
+
 	@ResponseBody
 	@RequestMapping("/index/card/findDepotCardByCardnum")
 	public Msg findDepotCardnum(@RequestParam("cardnum")String cardnum,HttpSession session){
@@ -115,7 +115,7 @@ public class CardController {
 		return Msg.success().add("depotcard", depotcard).add("cardType", cardType)
 				.add("cardTypes", cardTypes).add("user", user).add("user_role", currentUser.getRole());
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/index/card/alertDepotCard")
 	public Msg alertDepotCard(DepotcardManagerData depotcardManagerData){
@@ -151,7 +151,7 @@ public class CardController {
 		depotcardService.deleteDepotCard(cardnum);
 		return Msg.success();
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/index/card/findCoupon")
 	public Msg findCoupon(@RequestParam("cardnum")String cardnum)
@@ -163,8 +163,8 @@ public class CardController {
 		}
 		return Msg.fail();
 	}
-	
-	
+
+
 	/**
 	 * ��ֵ�ύ
 	 */
@@ -198,7 +198,7 @@ public class CardController {
 		incomeService.save(income);
 		return Msg.success();
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/index/card/changeLoseCard")
 	@Transactional
@@ -254,7 +254,7 @@ public class CardController {
 				//�������¿�
 				if(Integer.parseInt(depotcardManagerData.getType())==2)
 				{
-					
+
 					if(money<Constants.MONTHCARD)
 					{
 						return Msg.fail().add("money_pay", Constants.MONTHCARD-money);
@@ -273,8 +273,8 @@ public class CardController {
 		}
 		return Msg.success().add("money_pay", 0);
 	}
-	
-	
-	
-	
+
+
+
+
 }
