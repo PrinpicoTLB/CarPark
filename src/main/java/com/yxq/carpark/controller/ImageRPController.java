@@ -60,8 +60,8 @@ public class ImageRPController {
 	//	System.out.println(parkId);
 		if (file.isEmpty() || file==null) {
 			List<String> responses = new ArrayList<String>();
-			responses.add("�ļ�Ϊ��");
-			logger.info("�ļ�Ϊ��");
+			responses.add("文件不存在");
+			logger.info("文件不存在");
 			return new Result(-1, responses, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		}
 		String fileName = file.getOriginalFilename();
@@ -80,9 +80,8 @@ public class ImageRPController {
 			logger.info(img);
 			List<String> res = plateRecognise.plateRecognise(filePath + fileName);
 			if (res.size() < 1 || res.contains("")) {
-				logger.info("ʶ��ʧ�ܣ����绻��ͼƬ���ԣ�");
 				List<String> responses = new ArrayList<String>();
-				responses.add("ʶ����");
+				responses.add("ʶ文件解析异常");
 				return new Result(-1, responses, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			}
 			Result result = new Result(201, plateRecognise.plateRecognise(filePath + fileName),
@@ -95,7 +94,7 @@ public class ImageRPController {
 			e.printStackTrace();
 		}
 		List<String> responses = new ArrayList<String>();
-		responses.add("�ϴ�ʧ��");
+		responses.add("上传成功");
 	//	return parkInfo;
 		return new Result(-1, responses, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 	}

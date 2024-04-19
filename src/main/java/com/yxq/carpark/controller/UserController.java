@@ -45,12 +45,11 @@ public class UserController {
 	@RequestMapping("/index/user/register")
 	@ResponseBody
 	public Msg register(@RequestBody UserRegisterVO userRegisterVO) {
-		System.out.println("��ʼע��: " + userRegisterVO.toString());
+		System.out.println("注册信息: " + userRegisterVO.toString());
 		return userService.register(userRegisterVO) > 0 ? Msg.success() : Msg.fail();
 	}
 
 
-	//ajaxУ��username�Ƿ����
 		@ResponseBody
 		@RequestMapping("/index/user/checkUsername")
 		public Msg checkUsername(@RequestParam("username")String username){
@@ -63,22 +62,20 @@ public class UserController {
 			return Msg.success();
 		}
 
-		//���user
+
 		@ResponseBody
 		@RequestMapping("/index/user/addUser")
 		public Msg addUser(User user){
-			user.setSex("��");
 			user.setName(user.getUsername());
 			userService.save(user);
 			user=userService.findUserByUsername(user.getUsername());
 			if(user==null)
 			{
-				return Msg.fail().add("va_msg", "���ʧ�ܣ�");
+				return Msg.fail().add("va_msg", "添加失败");
 			}
-				return Msg.success().add("va_msg", "��ӳɹ���");
+				return Msg.success().add("va_msg", "添加成功");
 		}
 
-		//����user
 		@ResponseBody
 		@RequestMapping("/index/user/findUserById")
 		public Msg findUserById(@RequestParam("uid")Integer uid,HttpSession httpSession)
@@ -86,7 +83,7 @@ public class UserController {
 			User user=userService.findUserById(uid.intValue());
 			if(user==null)
 			{
-				return Msg.fail().add("va_msg", "����ʧ�ܣ�");
+				return Msg.fail().add("va_msg", "用户不存在");
 			}else
 			{
 				User currentUser=(User) httpSession.getAttribute("user");
@@ -110,9 +107,9 @@ public class UserController {
 			try {
 						userService.update(user);
 			} catch (Exception e) {
-				return Msg.fail().add("va_msg", "�޸�ʧ�ܣ�");
+				return Msg.fail().add("va_msg", "数据库更新失败");
 			}
-				return Msg.success().add("va_msg", "�޸ĳɹ���");
+				return Msg.success().add("va_msg", "更新成功");
 		}
 
 		//ɾ��user
@@ -126,6 +123,8 @@ public class UserController {
 			log.info("删除用户:" + user.toString() + ",删除人:" + user1.toString());
 			if(user.getRole() == user1.getRole()) {
 				return Msg.fail().add("va_msg","很抱歉，您无法删除同级用户!");
+			} else if (user1.getUsername().equals(user.getUsername())) {
+				return Msg.fail().add("va_msg","无法删除自己");
 			}
 			if(user!=null)
 			{
@@ -138,15 +137,15 @@ public class UserController {
 					//����ͣ������ɾ
 					if(parkInfo!=null)
 					{
-						return Msg.fail().add("va_msg", "�г�����ͣ��������ɾ����");
+						return Msg.fail().add("va_msg", "停车记录仍然存在");
 					}else{
 						depotcardService.deleteDepotCard(cardnum);
 					}
 				}
 				userService.delUserById(uid.intValue());
-				return Msg.success().add("va_msg", "ɾ���ɹ���");
+				return Msg.success().add("va_msg", "删除成功");
 			}else{
-				return Msg.fail().add("va_msg", "ɾ��ʧ�ܣ�");
+				return Msg.fail().add("va_msg", "用户信息不存在");
 			}
 		}
 

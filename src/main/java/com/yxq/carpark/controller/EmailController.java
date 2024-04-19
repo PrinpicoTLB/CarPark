@@ -19,12 +19,12 @@ import com.yxq.carpark.utils.Msg;
 
 @Controller
 public class EmailController {
-	
+
 	@Autowired
 	private EmailService emailService;
 	@Autowired
 	private UserService userService;
-	
+
 	@ResponseBody
 	@RequestMapping("index/email/addEmail")
 	public Msg addEmail(EmailData emailData,HttpSession session)
@@ -49,12 +49,12 @@ public class EmailController {
 				email.setTime(new Date());
 			}
 		} catch (Exception e) {
-			return Msg.fail().add("va_msg", "ÏµÍ³´íÎó£¡");
+			return Msg.fail().add("va_msg", "æ•°æ®åº“å¼‚å¸¸");
 		}
 		emailService.addEmail(email);
-		return Msg.success().add("va_msg", "Ìí¼Ó³É¹¦£¡");
+		return Msg.success().add("va_msg", "æ·»åŠ æˆåŠŸ");
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("index/email/delete")
 	public Msg delete(EmailData emailData,HttpSession session)
@@ -62,7 +62,7 @@ public class EmailController {
 		User user=(User) session.getAttribute("user");
 		return Msg.success();
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("index/email/detail")
 	public Msg detail(EmailData emailData,HttpSession session)
@@ -85,7 +85,7 @@ public class EmailController {
 		}
 		return Msg.success().add("email", email).add("respon", respon);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("index/email/responEmailSubmit")
 	public Msg	responEmailSubmit(EmailData emailData,HttpSession session)
@@ -120,8 +120,8 @@ public class EmailController {
 			int id=emailData.getId();
 			emailService.deleteEmail(id);
 		} catch (Exception e) {
-			return Msg.fail().add("va_msg", "É¾³ıÊ§°Ü£¡");
+			return Msg.fail().add("va_msg", "æ•°æ®åº“å¼‚å¸¸");
 		}
-		return Msg.success().add("va_msg", "É¾³ı³É¹¦£¡");
+		return Msg.success().add("va_msg", "åˆ é™¤æˆåŠŸ");
 	}
 }

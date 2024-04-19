@@ -57,7 +57,7 @@
 			<td>${item.cardnum }</td>
 			</c:if>
 			<td><input class="btn btn-default" type="button" onclick="editUser(${item.id})" value="修改">
-			<c:if test="${sessionScope.user.role!=3 }">
+			<c:if test="${sessionScope.user.role!=3 && item.username != sessionScope.user.username }">
 			<input
 				class="btn btn-default" type="button" onclick="deleteUser( '${item.username }',${item.id})" value="删除">
 			</c:if>
@@ -66,7 +66,7 @@
 	</c:forEach>
 </table>
 <ul class="pagination">
-				
+
 				<li><a href="${APP_PATH }/index/findAllUser?tag=${users.tag}&&page=${users.current}"
 				target="main"
 					onclick="$('div#main').load(this.href);return false;">&laquo;</a></li>
@@ -208,8 +208,8 @@
 			}
 		})
 	}
-	
-	
+
+
 	/* 编辑用户模态框显示*/
 	function editUser(uid) {
         var user_role=$("#user_role").val();
@@ -268,7 +268,7 @@
 			}
 		})
 	}
-	
+
 	function editUserSubmit(uid) {
 		$.ajax({
 			type : 'post',
@@ -283,8 +283,8 @@
 			}
 		})
 	}
-	
-	
+
+
 	/* 删除用户模态框显示*/
 	function deleteUser(username,id) {
 		var html = "<label>确认删除,"+username+"吗？</br>删除用户会把该用户所有相关信息删除！</label><div style=\"width: 30%;\">";
@@ -292,9 +292,9 @@
 		$("#checkSubmit").html("删除");
 		$("#checkSubmit").attr("onclick","deleteUserSubmit("+id+")");
 		$(".modal-body").append(html);
-		$("#myModal").modal('show'); 
+		$("#myModal").modal('show');
 	}
-	
+
 	/* 删除用户提交 */
 	function deleteUserSubmit(uid){
 		$.ajax({

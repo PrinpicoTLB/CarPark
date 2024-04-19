@@ -36,9 +36,18 @@
 			</button>
 			<input type="hidden" id="income_method_num" value="9" />
 			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-				<li role="presentation" onclick="chooseMethod(0)">现金</li>
-				<li role="presentation" onclick="chooseMethod(2)">微信</li>
-				<li role="presentation" onclick="chooseMethod(1)">支付宝</li>
+				<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="${APP_PATH }/index/findAllIncome?tag=4" onclick="$('div#main').load(this.href);return false;">全部</a>
+				</li>
+				<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="${APP_PATH }/index/findAllIncome?tag=0" onclick="$('div#main').load(this.href);return false;">现金</a>
+				</li>
+				<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="${APP_PATH }/index/findAllIncome?tag=2" onclick="$('div#main').load(this.href);return false;">微信</a>
+				</li>
+				<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="${APP_PATH }/index/findAllIncome?tag=1" onclick="$('div#main').load(this.href);return false;">支付宝</a>
+				</li>
 			</ul>
 		</div>
 				</caption>

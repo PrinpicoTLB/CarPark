@@ -7,7 +7,6 @@ import com.yxq.carpark.entity.ParkInfo;
 
 @Mapper
 public interface ParkinfoDao extends BaseDao<ParkInfo>{
-	//���ͣ��λ��Ϣ
 	public void save(ParkInfo parkInfo);
 	public ParkInfo findParkinfoByParknum(@Param("parknum")int parknum);
 	public void deleteParkinfoByParkNum(@Param("parknum")int parknum);

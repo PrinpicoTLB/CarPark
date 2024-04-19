@@ -18,7 +18,7 @@ public class DepotcardServiceImpl implements DepotcardService {
 
 	@Autowired
 	private DepotcardDao depotcardDao;
-	
+
 	public List<DepotcardManagerData> findAllDepotcard(String cardnum,int page,int size) {
 		List<DepotcardManagerData> depotcardManagerDatas=depotcardDao.findAllDepotcard(cardnum,page,size);
 		return depotcardManagerDatas;
@@ -31,7 +31,6 @@ public class DepotcardServiceImpl implements DepotcardService {
 		String dateStr=trans.replaceAll(" ", "").replaceAll("-", "");
 		String cardnum=depotcardManagerData.getUsername()+dateStr;
 		Depotcard depotcardTem=depotcardDao.findByCardnum(cardnum);
-		//Í£³µ¿¨ÒÑ´æÔÚ
 		if(depotcardTem!=null)
 		{
 			return null;

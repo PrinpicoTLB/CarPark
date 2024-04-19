@@ -16,7 +16,7 @@ import com.yxq.carpark.utils.Msg;
 
 @Controller
 public class DepotController {
-	
+
 	@Autowired
 	private ParkinfoallService parkinfoallService;
 	@Autowired
@@ -33,7 +33,7 @@ public class DepotController {
 		{
 			return Msg.success().add("parkinfoall", parkinfoall);
 		}
-		return Msg.fail().add("va_msg", "ÏµÍ³³ö´í£¬ÕÒ²»µ½¸ÃÍ£³µĞÅÏ¢¡£");
+		return Msg.fail().add("va_msg", "åœè½¦è®°å½•ä¸å­˜åœ¨");
 	}
 
 	@ResponseBody
@@ -42,12 +42,11 @@ public class DepotController {
 	{
 		int cardcount=depotcardService.findAllDepotcardCount("");
 		int parkcount=parkspaceService.findAllParkspaceCount(0);
-		//Ã»ÓĞ¶àÓàÁÙÊ±Í£³µÎ»
 		if(cardcount+5>=parkcount)
 		{
 			return Msg.fail();
 		}
 		return Msg.success();
 	}
-	
+
 }

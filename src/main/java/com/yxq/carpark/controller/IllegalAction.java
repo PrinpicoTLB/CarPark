@@ -21,9 +21,9 @@ public class IllegalAction {
 
 	@Autowired
 	private IllegalInfoService illegalInfoService;
-	@Autowired 
+	@Autowired
 	private UserService userService;
-	
+
 	@ResponseBody
 	@RequestMapping("index/illegal/findIllegalInfo")
 	public Msg findIllegalInfo(@RequestParam("id") Integer id)
@@ -31,7 +31,7 @@ public class IllegalAction {
 		IllegalInfo illegalInfo=illegalInfoService.findById(id.intValue());
 		if(illegalInfo==null)
 		{
-			return Msg.fail().add("va_msg", "∑¢…˙¥ÌŒÛ£¨«Î÷ÿ–¬≤Èø¥£°");
+			return Msg.fail().add("va_msg", "ËøùËßÑËÆ∞ÂΩï‰∏çÂ≠òÂú®");
 		}
 		int uid=illegalInfo.getUid();
 		User user=userService.findUserById(uid);
@@ -42,7 +42,7 @@ public class IllegalAction {
 		illegalInfo.setFormatDate(time);
 		return Msg.success().add("illegalInfo", illegalInfo);
 	}
-	
+
 	@RequestMapping("index/illegal/deleteIllegalInfo")
 	@ResponseBody
 	public Msg deleteIllegalInfo(@RequestParam("id") Integer id)

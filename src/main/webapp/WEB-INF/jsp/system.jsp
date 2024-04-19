@@ -12,7 +12,7 @@
 <body>
 <a id="exportIncomeA" href=""></a>
 	<button class="btn btn-default" onclick="exportIncome()" type="button">导出收入</button>
-	<button class="btn btn-default" onclick="setCharge()" type="button">设置收费</button> 
+	<button class="btn btn-default" onclick="setCharge()" type="button">设置收费</button>
 </body>
 <script type="text/javascript">
 function exportIncome()
@@ -45,32 +45,51 @@ function exportIncomeSubmit()
 	$("#myModal").modal('hide');
 	window.location="${APP_PATH }/index/exportIncome?datetimepickerStart="+datetimepickerStart+"&&datetimepickerEnd="+datetimepickerEnd;
 }
-function setCharge()
-{
+function setCharge() {
+	$.ajax({
+		type: 'get',
+		url: '/depot-system/index/findSystem',
+		success: function(data) {
+			// console.log("当前收费:", data);
+			displayChargeData(data);
+		},
+		error: function() {
+			// alert('获取当前收费数据失败');
+			displayChargeData(null);
+		}
+	});
+}
+
+function displayChargeData(data) {
+	var hourmoney = data.code == 100 ? data.extend.depotInfo.hourmoney : '';
+	var monthcard = data.code == 100 ? data.extend.depotInfo.monthcard : '';
+	var yearcard = data.code == 100 ? data.extend.depotInfo.yearcard : '';
+	var illegal = data.code == 100 ? data.extend.depotInfo.illegal : '';
+
 	var html = "<label>时收费</label><div style=\"width: 30%;\">"
-		+ "<div class=\"input-group\">"
-		+ "<input id=\"hourmoney\" name=\"hourmoney\" type=\"text\" class=\"form-control\" unselectable=\"on\">"
-		+ "</div>"
-		+ "</div>"
-		+"<label>月收费</label><div style=\"width: 30%;\">"
-		+ "<div class=\"input-group\">"
-		+ "<input id=\"monthcard\" name=\"monthcard\" type=\"text\" class=\"form-control\" unselectable=\"on\">"
-		+ "</div>"
-		+ "</div>"
-		+ "<label>年收费：</label><div style=\"width: 30%;\">"
-		+ "<div class=\"input-group\">"
-		+ "<input id=\"yearcard\" name=\"yearcard\" type=\"text\" class=\"form-control\" unselectable=\"on\">"
-		+ "</div></div>"
-		+"<label>违规收费</label><div style=\"width: 30%;\">"
-		+ "<div class=\"input-group\">"
-		+ "<input id=\"illegal\" name=\"illegal\" type=\"text\" class=\"form-control\" unselectable=\"on\">"
-		+ "</div>"
-		+ "</div>"
-		$("#myModalLabel").html("设置收费（空为不修改）");
-		$("#checkSubmit").html("设置");
-		$("#checkSubmit").attr("onclick","setChargeSubmit()");
-		$(".modal-body").append(html);
-		$("#myModal").modal('show');
+			+ "<div class=\"input-group\">"
+			+ "<input id=\"hourmoney\" name=\"hourmoney\" type=\"text\" class=\"form-control\" placeholder=\"" + hourmoney + "\" unselectable=\"on\">"
+			+ "</div>"
+			+ "</div>"
+			+"<label>月收费</label><div style=\"width: 30%;\">"
+			+ "<div class=\"input-group\">"
+			+ "<input id=\"monthcard\" name=\"monthcard\" type=\"text\" class=\"form-control\" placeholder=\"" + monthcard + "\" unselectable=\"on\">"
+			+ "</div>"
+			+ "</div>"
+			+ "<label>年收费：</label><div style=\"width: 30%;\">"
+			+ "<div class=\"input-group\">"
+			+ "<input id=\"yearcard\" name=\"yearcard\" type=\"text\" class=\"form-control\" placeholder=\"" + yearcard + "\" unselectable=\"on\">"
+			+ "</div></div>"
+			+"<label>违规收费</label><div style=\"width: 30%;\">"
+			+ "<div class=\"input-group\">"
+			+ "<input id=\"illegal\" name=\"illegal\" type=\"text\" class=\"form-control\" placeholder=\"" + illegal + "\" unselectable=\"on\">"
+			+ "</div>"
+			+ "</div>";
+	$("#myModalLabel").html("设置收费（空为不修改）");
+	$("#checkSubmit").html("设置");
+	$("#checkSubmit").attr("onclick","setChargeSubmit()");
+	$(".modal-body").append(html);
+	$("#myModal").modal('show');
 }
 function setChargeSubmit()
 {

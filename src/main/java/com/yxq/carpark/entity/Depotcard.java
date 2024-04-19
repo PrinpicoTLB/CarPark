@@ -5,23 +5,23 @@ import java.util.Date;
 
 
 public class Depotcard implements Serializable{
-	//Í£³µ³¡¿¨ĞÅÏ¢±í
+	// åœè½¦å¡åŸºæœ¬ä¿¡æ¯
 	private int id;
-	//¿¨ºÅ
+	// å¡å·
 	private String cardnum;
-	//¿¨ÀàĞÍ
+	// ç±»å‹
 	private int type;
-	//Óà¶î
+	// ä½™é¢
 	private double money;
-	//·¢¿¨Ê±¼ä
+	// å‘å¡æ—¶é—´
 	private Date time;
-	//ÊÇ·ñ¹ÒÊ§
+	// æ˜¯å¦ä¸¢å¤±
 	private int islose;
-	//Î¥¹æ´ÎÊı
+	// è¿è§„æ¬¡æ•°
 	private int illegalcount;
-	//¿Û·ÑÊ±¼ä
+	// æ‰£è´¹æ—¶é—´
 	private Date deductedtime;
-	
+
 	public Date getDeductedtime() {
 		return deductedtime;
 	}
@@ -76,14 +76,14 @@ public class Depotcard implements Serializable{
 	public void setIslose(int islose) {
 		this.islose = islose;
 	}
-	
+
 	public int getIllegalcount() {
 		return illegalcount;
 	}
-	
+
 	public void setIllegalcount(int illegalcount) {
 		this.illegalcount = illegalcount;
 	}
-	
-	
+
+
 }

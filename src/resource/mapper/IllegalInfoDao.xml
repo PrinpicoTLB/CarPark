@@ -35,6 +35,9 @@
 <select id="findByUid" resultType="com.yxq.carpark.entity.IllegalInfo">
 	select * from illegalinfo i where i.uid=#{uid}
 </select>
+	<select id="findAllByCardName" resultType="com.yxq.carpark.entity.IllegalInfo">
+		select * from illegalinfo i where i.cardNum=#{cardnum}
+	</select>
 <update id="updateCardnum" flushCache="true">
 	update illegalinfo set cardnum=#{cardnumNew} where cardnum=#{cardnum}
 </update>

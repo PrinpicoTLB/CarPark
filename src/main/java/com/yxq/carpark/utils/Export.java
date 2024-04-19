@@ -16,34 +16,34 @@ public class Export {
 
 	public String createExcel(HttpServletResponse response) throws IOException {
 
-		// ´´½¨HSSFWorkbook¶ÔÏó(excelµÄÎÄµµ¶ÔÏó)
+		// åˆ›å»ºHSSFWorkbookå¯¹è±¡(excelçš„æ–‡æ¡£å¯¹è±¡)
 		HSSFWorkbook wb = new HSSFWorkbook();
-		// ½¨Á¢ĞÂµÄsheet¶ÔÏó£¨excelµÄ±íµ¥£©
-		HSSFSheet sheet = wb.createSheet("³É¼¨±í");
-		// ÔÚsheetÀï´´½¨µÚÒ»ĞĞ£¬²ÎÊıÎªĞĞË÷Òı(excelµÄĞĞ)£¬¿ÉÒÔÊÇ0¡«65535Ö®¼äµÄÈÎºÎÒ»¸ö
+		// å»ºç«‹æ–°çš„sheetå¯¹è±¡ï¼ˆexcelçš„è¡¨å•ï¼‰
+		HSSFSheet sheet = wb.createSheet("æˆç»©è¡¨");
+		// åœ¨sheeté‡Œåˆ›å»ºç¬¬ä¸€è¡Œï¼Œå‚æ•°ä¸ºè¡Œç´¢å¼•(excelçš„è¡Œ)ï¼Œè¡Œå·ä»0å¼€å§‹åˆ°65535ä¹‹é—´çš„ä»»æ„ä¸€è¡Œ
 		HSSFRow row1 = sheet.createRow(0);
-		// ´´½¨µ¥Ôª¸ñ£¨excelµÄµ¥Ôª¸ñ£¬²ÎÊıÎªÁĞË÷Òı£¬¿ÉÒÔÊÇ0¡«255Ö®¼äµÄÈÎºÎÒ»¸ö
+		// åˆ›å»ºå•å…ƒæ ¼(excelçš„å•å…ƒå…ƒç´ )ï¼Œå¹¶è®¾ç½®å•å…ƒæ ¼å†…å®¹
 		HSSFCell cell = row1.createCell(0);
-		// ÉèÖÃµ¥Ôª¸ñÄÚÈİ
-		cell.setCellValue("Ñ§Ô±¿¼ÊÔ³É¼¨Ò»ÀÀ±í");
-		// ºÏ²¢µ¥Ôª¸ñCellRangeAddress¹¹Ôì²ÎÊıÒÀ´Î±íÊ¾ÆğÊ¼ĞĞ£¬½ØÖÁĞĞ£¬ÆğÊ¼ÁĞ£¬ ½ØÖÁÁĞ
+		// è®¾ç½®å•å…ƒæ ¼å†…å®¹
+		cell.setCellValue("å­¦å‘˜æˆç»©ä¸€è§ˆè¡¨");
+		// åˆå¹¶å•å…ƒæ ¼CellRangeAddressæ„é€ å‚æ•°ä¾æ¬¡è¡¨ç¤ºï¼šèµ·å§‹è¡Œï¼Œç»“æŸè¡Œï¼Œèµ·å§‹åˆ—ï¼Œç»“æŸåˆ—
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
-		// ÔÚsheetÀï´´½¨µÚ¶şĞĞ
+		// åœ¨sheeté‡Œåˆ›å»ºç¬¬äºŒè¡Œ
 		HSSFRow row2 = sheet.createRow(1);
-		// ´´½¨µ¥Ôª¸ñ²¢ÉèÖÃµ¥Ôª¸ñÄÚÈİ
-		row2.createCell(0).setCellValue("ĞÕÃû");
-		row2.createCell(1).setCellValue("°à¼¶");
-		row2.createCell(2).setCellValue("±ÊÊÔ³É¼¨");
-		row2.createCell(3).setCellValue("»úÊÔ³É¼¨");
-		// ÔÚsheetÀï´´½¨µÚÈıĞĞ
+		// åˆ›å»ºå•å…ƒæ ¼å¹¶è®¾ç½®å•å…ƒæ ¼å†…å®¹
+		row2.createCell(0).setCellValue("å§“å");
+		row2.createCell(1).setCellValue("ç­çº§");
+		row2.createCell(2).setCellValue("ç†è®ºæˆç»©");
+		row2.createCell(3).setCellValue("å®è·µæˆç»©");
+		// åœ¨sheeté‡Œåˆ›å»ºç¬¬ä¸‰è¡Œ
 		HSSFRow row3 = sheet.createRow(2);
-		row3.createCell(0).setCellValue("ÀîÃ÷");
+		row3.createCell(0).setCellValue("å¼ ä¸‰");
 		row3.createCell(1).setCellValue("As178");
 		row3.createCell(2).setCellValue(87);
 		row3.createCell(3).setCellValue(78);
-		// .....Ê¡ÂÔ²¿·Ö´úÂë
+		// .....çœç•¥éƒ¨åˆ†ä»£ç 
 
-		// Êä³öExcelÎÄ¼ş
+		// è¾“å‡ºExcelæ–‡ä»¶
 		OutputStream output = response.getOutputStream();
 		response.reset();
 		response.setHeader("Content-disposition", "attachment; filename=details.xls");

@@ -16,7 +16,7 @@
 <script href="${APP_PATH }/css/register.css" rel="stylesheet" media="screen"></script>
 </head>
 <body>
-	<div style="width: 100%;height: 100%;background-image: url(${APP_PATH }/pic/login.jpg);position: absolute;background-size:100% 100% ">
+	<div style="width: 100%;height: 100%;background-image: url(${APP_PATH }/pic/login1.jpg);position: absolute;background-size:100% 100% ">
 	<form id="loginForm" class="form-horizontal" role="form" style="padding-left: 35%;padding-top: 10%;" action="${APP_PATH }/index/toindex" method="post">
 		<div class="form-group" style="width: 50%;text-align: center;">
 			<h2 style="color:white">停车管理系统</h2>
@@ -42,9 +42,14 @@
 				<button type="button" onclick="submitForm()" class="btn btn-default" style="width: 40%">登录</button>
 			</div>
 		</div>
-		<div class="register" >
-			您还没有账号? <span><a href="/depot-system/register" id="registerLink">注册</a></span>
+		<div class="form-group" style="width: 70%;">
+			<div class="col-sm-offset-2 col-sm-10">
+				<a href="/depot-system/register" class="btn btn-default" style="width: 40%;">注册</a>
+			</div>
 		</div>
+<%--		<div class="register" >--%>
+<%--			您还没有账号? <span><a h><ref="/depot-system/register" id="registerLink">注册</a/span>--%>
+<%--		</div>--%>
 	</form>
 </div>
 </body>

@@ -30,4 +30,6 @@ public interface IllegalInfoDao extends BaseDao<IllegalInfo>{
 	public void updateCardnum(@Param("cardnum")String cardnum, @Param("cardnumNew")String cardnumNew);
 
 	public IllegalInfo findByCardnumParkin(@Param("cardnum")String cardNum, @Param("parkin")Date parkin);
+
+	List<IllegalInfo> findAllByCardName(@Param("cardnum") String cardnum);
 }

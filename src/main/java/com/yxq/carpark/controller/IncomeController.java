@@ -24,7 +24,7 @@ public class IncomeController {
 		if (income != null) {
 			return Msg.success().add("income", income);
 		}
-		return Msg.fail().add("va_msg", "ÏµÍ³³ö´í£¬ÕÒ²»µ½¸ÃÊÕÈëĞÅÏ¢¡£");
+		return Msg.fail().add("va_msg", "æ”¶å…¥è®°å½•ä¸å­˜åœ¨");
 	}
 
 }

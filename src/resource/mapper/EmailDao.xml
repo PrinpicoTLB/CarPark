@@ -52,7 +52,42 @@
 		and (sendid=#{uid} or toid=0)  and managedelete=0
 	</if>
 </select>
-<update id="updateEmail" parameterType="com.yxq.carpark.entity.Email">
+	<select id="findByPage" resultType="com.yxq.carpark.dto.EmailData">
+		SELECT *
+		FROM email t
+		WHERE t.toid = #{id} and t.title LIKE CONCAT('%', #{content}, '%')
+		<choose>
+			<when test="role == 3">
+				<choose>
+					<when test="tag == 0">
+						AND t.userisread = 0
+					</when>
+					<when test="tag == 1">
+						AND t.userisread = 1
+					</when>
+					<when test="tag == 2">
+						AND t.userisread = 2
+					</when>
+				</choose>
+			</when>
+			<otherwise>
+				<choose>
+					<when test="tag == 0">
+						AND t.managerisread = 0
+					</when>
+					<when test="tag == 1">
+						AND t.managerisread = 1
+					</when>
+					<when test="tag == 2">
+						AND t.managerisread = 2
+					</when>
+				</choose>
+			</otherwise>
+		</choose>
+		ORDER BY t.time DESC
+		LIMIT #{page}, #{size}
+	</select>
+    <update id="updateEmail" parameterType="com.yxq.carpark.entity.Email">
 	update email set sendid=#{sendid},toid=#{toid},title=#{title},content=#{content},
 	time=#{time},managerisread=#{managerisread},userisread=#{userisread},userdeleted=#{userdeleted},
 	managedelete=#{managedelete} where id=#{id}

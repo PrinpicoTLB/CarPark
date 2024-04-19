@@ -11,7 +11,7 @@ import com.yxq.carpark.entity.Income;
 @Mapper
 public interface IncomeDao extends BaseDao<Income>{
 
-	List<IncomeData> findAllIncome(@Param("page")int page,@Param("size")int size,@Param("content")String content,@Param("startTime")String startTime,@Param("endTime")String endTime,@Param("num")int num);
+	List<IncomeData> findAllIncome(@Param("page")int page, @Param("size")int size, @Param("content")String content, @Param("startTime")String startTime, @Param("endTime")String endTime, @Param("num")int num, @Param("tag") int tag);
 
 	Income findById(Integer id);
 
@@ -20,6 +20,6 @@ public interface IncomeDao extends BaseDao<Income>{
 	void updateCardnum(@Param("cardnum")String cardnum, @Param("cardnumNew")String cardnumNew);
 
 	List<IncomeData> findAllIncome1(@Param("content")String content,@Param("startTime")String startTime,@Param("endTime")String endTime,@Param("num")int num);
-	
+
 	int findPayByType(int type);
 }

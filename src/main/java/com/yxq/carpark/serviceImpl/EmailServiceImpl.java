@@ -45,4 +45,9 @@ public class EmailServiceImpl implements EmailService{
 		emailDao.deleteEmail(id);
 	}
 
+	@Override
+	public List<EmailData> findByPage(int page, int pageSize, int id, String content, int role, Integer tag) {
+		return emailDao.findByPage(page, pageSize, id, content, role, tag);
+	}
+
 }

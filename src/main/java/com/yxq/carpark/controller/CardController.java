@@ -70,7 +70,7 @@ public class CardController {
 	    //	System.out.println(money);
 		Income income=new Income();
 		if (depotcard==null) {
-			return Msg.fail().add("va_msg", "�˺��Ѿ����ڣ�");
+			return Msg.fail().add("va_msg", "添加卡失败");
 		}
 		int type=Integer.parseInt(depotcardManagerData.getType());
 		if(type==2){
@@ -144,7 +144,7 @@ public class CardController {
 		//����ͣ������ɾ
 		if(parkInfo!=null)
 		{
-			return Msg.fail().add("va_msg", "�г�����ͣ��������ɾ����");
+			return Msg.fail().add("va_msg", "停车记录存在，删除失败");
 		}
 		// 删除修正为重置cardID
 		userService.deleteUserByCardid(cardid);
@@ -165,9 +165,6 @@ public class CardController {
 	}
 
 
-	/**
-	 * ��ֵ�ύ
-	 */
 	@ResponseBody
 	@RequestMapping("/index/card/rechargeDepotCardSubmit")
 	public Msg rechargeDepotCardSubmit(DepotcardManagerData depotcardManagerData){
@@ -175,7 +172,7 @@ public class CardController {
 		Income income=new Income();
 		if(depotcard==null)
 		{
-			return Msg.fail().add("va_msg", "��ͣ���������ڣ����������룡");
+			return Msg.fail().add("va_msg", "充值卡不存在");
 		}
 		double moneymore=depotcard.getMoney()+depotcardManagerData.getMoney();
 		double money=depotcardManagerData.getMoney();
@@ -187,7 +184,7 @@ public class CardController {
 		try {
 			depotcardService.addMoney(depotcardManagerData.getCardnum(),moneymore);
 		} catch (Exception e) {
-			return Msg.fail().add("va_msg", "���ִ���");
+			return Msg.fail().add("va_msg", "数据库异常，请重试");
 		}
 		income.setCardnum(depotcardManagerData.getCardnum());
 		income.setType(depotcard.getType());
@@ -251,7 +248,6 @@ public class CardController {
 				{
 					money+=listCou.get(0).getMoney();
 				}
-				//�������¿�
 				if(Integer.parseInt(depotcardManagerData.getType())==2)
 				{
 

@@ -5,30 +5,30 @@ import java.util.Date;
 
 
 public class FormData implements Serializable {
-	//ͣ��λ��ID
+	// 停车位ID
 	private int id;
 	private String judgecarnum;
-	//ͣ��λ��
+	// 停车位号
 	private Integer parkNum;
-	//����
+	// 卡号
 	private String cardNum;
-	//ͣ������
+	// 停车车号
 	private String carNum;
-	//�Ƿ���ʱͣ��
+	// 是否临时停车
 	private Integer parkTem;
-	//ͣ��ʱ��
+	// 停车时间
 	private Date parkin;
-	//����ʱ��
+	// 离场时间
 	private Date parkout;
-	//��λ����
+	// 标签状态
 	private Integer tag;
-	//Υ����Ϣ
+	// 违规信息
 	private String illegalInfo;
-	//֧����ʽ��֧������΢�ţ��ֽ�,�ӿ��п�Ǯ��
+	// 支付方式：支付宝，微信，现金，刷卡机收款
 	private Integer payid;
-	//֧�����
+	// 支付金额
 	private Integer pay_money;
-	//�꿨�¿��Ƿ���
+	// 支付类型是否成功
 	private Integer pay_type;
 
 	public String getJudgecarnum() {

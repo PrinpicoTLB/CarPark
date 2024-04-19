@@ -23,7 +23,7 @@ import com.yxq.carpark.utils.Msg;
 public class LoginController {
 	@Autowired
 	private UserService userService;
-	
+
 	@RequestMapping("/login/login")
 	public String login(){
 		return "login";
@@ -36,7 +36,7 @@ public class LoginController {
 	public String register(){
 		return "register";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/login/index")
 	public Msg loginIndex(User user,HttpSession httpSession){
@@ -46,13 +46,12 @@ public class LoginController {
 		{
 			httpSession.setAttribute("user", user1);
 			return Msg.success();
-			
+
 		}else{
-			return Msg.fail().add("va_msg", "�������");
+			return Msg.fail().add("va_msg", "密码错误");
 		}
 	}
-	
-	//ajaxУ��username�Ƿ����
+
 	@ResponseBody
 	@RequestMapping("/login/checkUsernameExit")
 	public Msg checkUsernameExit(@RequestParam("username")String username){
@@ -60,7 +59,7 @@ public class LoginController {
 		User user=userService.findUserByUsername(username);
 		if(user==null)
 		{
-			return Msg.fail().add("va_msg", "�û���������");
+			return Msg.fail().add("va_msg", "用户不存在");
 		}
 		return Msg.success();
 	}

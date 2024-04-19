@@ -27,5 +27,6 @@ public interface IllegalInfoService {
 	public void updateCardnum(String cardnum, String cardnumNew);
 
 	public IllegalInfo findByCardnumParkin(String cardNum, Date parkin);
-	
+
+	List<IllegalInfo> findAllByCardName(String cardnum);
 }

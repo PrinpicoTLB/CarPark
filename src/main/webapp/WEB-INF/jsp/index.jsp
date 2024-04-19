@@ -104,7 +104,7 @@ th {
 <body>
 	<div class="topscan">
 		<div class="top-left"><span class="glyphicon glyphicon-home"></span><b> 基于SpringBoot的停车管理系统</b></div>
-		
+
 		<div class="user-click">
 			<ul class="nav navbar-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -129,7 +129,7 @@ th {
 				<li><a href="${APP_PATH }/index/findAllCoupon" target="main"
 					onclick="$('div#main').load(this.href);return false;"><span class="	glyphicon glyphicon-usd"></span> 优惠券管理</a></li>
 				<li><a href="${APP_PATH }/index/findAllEmail" target="main"
-					onclick="$('div#main').load(this.href);return false;"><span class="	glyphicon glyphicon-send"></span> 邮箱管理</a></li> 
+					onclick="$('div#main').load(this.href);return false;"><span class="	glyphicon glyphicon-send"></span> 邮箱管理</a></li>
 				<li><a href="${APP_PATH }/index/findAllIllegalinfo" target="main"
 					onclick="$('div#main').load(this.href);return false;"><span class="glyphicon glyphicon-th-large"></span> 违规管理</a></li>
 				<c:if test="${sessionScope.user.role==1 }">
@@ -144,7 +144,7 @@ th {
 				<li><a href="${APP_PATH }/index/system" target="main"
 					onclick="$('div#main').load(this.href);return false;"><span class="	glyphicon glyphicon-circle-arrow-down"></span> 导出功能</a></li>
 				</c:if>
-				
+
 			</ul>
 		</div>
 		<div id="main"
@@ -161,10 +161,10 @@ th {
 								<button class="btn btn-default" type="button" onclick="checkOutByCardnum()">出库</button>
 							</span>
 						</div>
-						
+
 						<!-- /input-group -->
 					</div>
-						<span><input type="button" value="停车情况" onclick="nowCar()" class="btn btn-default"></span> 
+						<span><input type="button" value="停车情况" onclick="nowCar()" class="btn btn-default"></span>
 						<%-- <a id="depotcardIndex" href="${APP_PATH }/index/line" target="main"
 					onclick="$('div#main').load(this.href);return false;"><span class="glyphicon glyphicon-credit-card"></span> 停车情况</a> --%>
 					<div class="dropdown" style="float: right; margin-right: 10%">
@@ -223,7 +223,7 @@ th {
 				</c:forEach>
 			</table>
 			<ul class="pagination">
-				
+
 				<li><a href="${APP_PATH }/index/toindex?tag=${parkspaces.tag}&&page=${parkspaces.current}">&laquo;</a></li>
 				<li><a href="${APP_PATH }/index/toindex?tag=${parkspaces.tag}&&page=${parkspaces.current+1}">${parkspaces.current+1}</a></li>
 				<c:if test="${parkspaces.current+1>=parkspaces.countPage}">
@@ -260,7 +260,7 @@ th {
 			<!-- /.modal-dialog -->
 		</div>
 	</form>
-	
+
 	<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog " role="document" style="width:900px" >
     <div class="modal-content" >
@@ -271,18 +271,18 @@ th {
      	<form action="${pageContext.request.contextPath}/fileUpload1" method="POST" enctype="multipart/form-data"  id="fileUploadForm">
       	<div class="modal-body" >
        	<input  id='id' name='id' value='$(id)' type='hidden'>
-		    <input type="file" name="file" class="file" /> 
+		    <input type="file" name="file" class="file" />
       	</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
         <button type="submit" class="btn btn-primary"  >上传云端识别</button>
       </div>
-      </form> 
-         
+      </form>
+
     </div>
   </div>
 </div>
-	
+
 	<div id="payForm">
 		<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
 			aria-labelledby="myModalLabel" aria-hidden="true">
@@ -332,7 +332,7 @@ $(document).ready(function(){
 		{
 			$("#depotcardIndex").click();
 		}
-	}); 
+	});
 	$('#myModal').on('hidden.bs.modal', function () {
 		$("#checkSubmit").show();
 		$(".modal-body").empty();
@@ -403,7 +403,7 @@ $(document).ready(function(){
 
 	/* 自动入库提交 */
 	function autoCheckInSubmit(){
-		
+
 		$.ajax({
 			type:'post',
 			url:'/depot-system/fileUpload1',
@@ -414,7 +414,7 @@ $(document).ready(function(){
 				if(data.code==100)
 					{
 					alert("入库成功！");
-			
+
 				window.location.href="/depot-system/index/toindex";
 					}else{
 						alert(data.extend.va_msg);
@@ -422,7 +422,7 @@ $(document).ready(function(){
 			}
 		})
 	}
-	
+
 	/* 入库提交 */
 	function checkInSubmit(){
 		var parkTem=$("#parkTem option:selected").val();
@@ -479,10 +479,10 @@ $(document).ready(function(){
 					{
 					parkTem="是";
 					}
-				var html = 
+				var html =
 				// 用什么方式支付
 				"<input id=\"payid\" name=\"payid\" value=\"9\" hidden=\"hidden\"/>"
-				// 需要支付金额 
+				// 需要支付金额
 				+"<input id=\"pay_money\" name=\"pay_money\" value=\"0\" hidden=\"hidden\"/>"
 				// 扣费还是月卡或年卡未到期 (0扣费，1不用扣费，9付钱)
 				+"<input id=\"pay_type\" name=\"pay_type\" value=\"9\" hidden=\"hidden\"/>"
@@ -509,7 +509,7 @@ $(document).ready(function(){
 				$("#myModal").modal('show');
 					}
 			}
-		}) 
+		})
 	}
 	/*显示支付宝支付*/
 	function pay_zfb()
@@ -518,7 +518,7 @@ $(document).ready(function(){
 		$("#pay_cash").hide();
 		$("#pay_wx").hide();
 		$("#payid").val(1);
-		
+
 	}
 	/*显示微信支付*/
 	function pay_wx()
@@ -575,7 +575,7 @@ $(document).ready(function(){
 				}
 				$("#paySubmit").attr("onclick","checkOutSubmit()");
 			}
-		}) 
+		})
 	}
 	/* 出库提交 */
 	function checkOutSubmit(){
@@ -597,7 +597,7 @@ $(document).ready(function(){
 			}
 		})
 	}
-	
+
 	/* 通过卡号/车牌号出库模态框显示 */
 	function checkOutByCardnum() {
 		var cardnum=$("#inputcardnum").val();
@@ -643,10 +643,10 @@ $(document).ready(function(){
 				$("#myModal").modal('show');
 					}
 			}
-		}) 
+		})
 	}
-	
-	
+
+
 	/* 查看详情模态框显示 */
 	function checkDetail(parknum) {
 		 $.ajax({
@@ -700,9 +700,9 @@ $(document).ready(function(){
 					alert("该停车位没有停车！");
 				}
 			}
-		}) 
+		})
 	}
-	
+
 	/* 违规模态框显示*/
 	function addIllegal(parknum) {
 		$.ajax({
@@ -740,22 +740,27 @@ $(document).ready(function(){
 			}
 		})
 	}
-	
-	
+
+
 	/*查看停车情况*/
 		function nowCar(){
  			window.location.assign("http://localhost:8080/depot-system/index/line")
  			}
-	
+
 	/* 违规提交*/
 	function illegalSubmit()
 	{
+		var formDataArray = $("#checkForm").serializeArray();
+		var formDataObject = {};
+		$.each(formDataArray, function(i, v) {
+			formDataObject[v.name] = v.value;
+		});
 		$.ajax({
 			type:'post',
 			url:'/depot-system/index/check/illegalSubmit',
-			datatype:'text',
-			data:$("#checkForm").serializeArray(),
-			contentType:'application/x-www-form-urlencoded',
+			datatype:'json',
+			data:JSON.stringify(formDataObject),
+			contentType:'application/json',
 			success:function(data){
 				if(data.code==100)
 					{
@@ -768,7 +773,7 @@ $(document).ready(function(){
 			}
 		})
 	}
-	
-	
+
+
 </script>
 </html>

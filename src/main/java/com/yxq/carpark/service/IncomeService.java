@@ -10,7 +10,7 @@ public interface IncomeService {
 
 	void save(Income income);
 
-	List<IncomeData> findAllIncome(int page,int size,String content,String startTime,String endTime,int num);
+	List<IncomeData> findAllIncome(int page, int size, String content, String startTime, String endTime, int num, Integer tag);
 
 	Income findById(Integer id);
 
@@ -19,6 +19,6 @@ public interface IncomeService {
 	void updateCardnum(String cardnum, String cardnumNew);
 
 	List<IncomeData> findAllIncome(String content, String startTime, String endTime, Integer num);
-	
+
 	int findPayByType(int type);
 }

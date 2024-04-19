@@ -12,15 +12,10 @@ import com.yxq.carpark.entity.User;
 @Mapper
 public interface UserDao extends BaseDao<User>{
 
-	//����û�
 	public void save(User user);
-	//ͨ��id���û�
 	public User findUserById(int id);
-	//ͨ���û������û�
 	public User findUserByUserName(String  username);
-	//ͨ��username��cardid����û���ֱ�����ͣ����ʱ��
 	public void updateByaddDepotCard(@Param("username")String username, @Param("cardid")int cardid);
-	//ͨ��ͣ����id��ѯ�û�
 	public User findUserByCardid(@Param("cardid")int cardid);
 	public List<User> findAllUser(@Param("page")int page,@Param("size")int size);
 	public void deleteUserByCardid(@Param("cardid")int cardid);

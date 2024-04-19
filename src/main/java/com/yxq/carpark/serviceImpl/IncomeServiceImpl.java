@@ -16,13 +16,13 @@ public class IncomeServiceImpl implements IncomeService {
 
 	@Autowired
 	private IncomeDao incomeDao;
-	
+
 	public void save(Income income) {
 		incomeDao.save(income);
 	}
 
-	public List<IncomeData> findAllIncome(int page,int size,String content,String startTime,String endTime,int num) {
-		return incomeDao.findAllIncome(page,size,content,startTime,endTime,num);
+	public List<IncomeData> findAllIncome(int page, int size, String content, String startTime, String endTime, int num, Integer tag) {
+		return incomeDao.findAllIncome(page,size,content,startTime,endTime,num, tag);
 	}
 
 	public Income findById(Integer id) {

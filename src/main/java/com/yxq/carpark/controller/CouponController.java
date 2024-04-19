@@ -25,14 +25,14 @@ import com.yxq.carpark.utils.Msg;
 
 @Controller
 public class CouponController {
-	
+
 	@Autowired
 	private CouponService couponService;
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private DepotcardService depotcardService;
-	
+
 	@ResponseBody
 	@RequestMapping("/index/coupon/findCouponById")
 	public Msg findCouponById(@RequestParam("id") Integer id)
@@ -40,7 +40,7 @@ public class CouponController {
 		Coupon coupon=couponService.findCouponById(id.intValue());
 		if(coupon==null)
 		{
-			return Msg.fail().add("va_msg", "²éÑ¯³ö´í£¬ÇëË¢ĞÂÒ³Ãæ£¡");
+			return Msg.fail().add("va_msg", "ä¼˜æƒ åˆ¸ä¸å­˜åœ¨");
 		}
 		return Msg.success().add("coupon", coupon);
 	}
@@ -51,14 +51,13 @@ public class CouponController {
 		Coupon coupon=couponService.findCouponById(id.intValue());
 		if(coupon==null)
 		{
-			return Msg.fail().add("va_msg", "É¾³ı³ö´í£¬ÇëË¢ĞÂÒ³Ãæ£¡");
+			return Msg.fail().add("va_msg", "ä¼˜æƒ åˆ¸ä¸å­˜åœ¨ï¿½æ£¡");
 		}else{
 			couponService.deleteCoupon(id);
-			return Msg.success().add("va_msg", "É¾³ı³É¹¦£¡");
+			return Msg.success().add("va_msg", "åˆ é™¤æˆåŠŸ");
 		}
 	}
-	
-	//Éú³ÉÓÅ»İÈ¯
+
 	@ResponseBody
 	@RequestMapping("/index/coupon/setCoupon")
 	public Msg setCoupon(CouponData couponData)
@@ -67,18 +66,18 @@ public class CouponController {
 		int count=couponData.getCount();
 		if(userService.findAllUserCount(3)<count)
 		{
-			return Msg.fail().add("va_msg", "³¬¹ıÓÃ»§ÊıÁ¿£¬ÇëÖØĞÂÊäÈë£¡");
+			return Msg.fail().add("va_msg", "ä¼˜æƒ åˆ¸æ•°é‡å¤§äºç”¨æˆ·æ•°é‡");
 		}
-		List<User> list=userService.finAllUserByRole(3); 
+		List<User> list=userService.finAllUserByRole(3);
 		Set<User> userSet=new HashSet<User>();
 		for(User user:list)
 		{
 			userSet.add(user);
 		}
-		Iterator<User> it = userSet.iterator();  
+		Iterator<User> it = userSet.iterator();
 		int c=0;
 		try {
-			while (it.hasNext()) {  
+			while (it.hasNext()) {
 				if(c>=count)
 				{
 					break;
@@ -93,9 +92,9 @@ public class CouponController {
 				coupon.setTime(new Date());
 				couponService.addCoupon(coupon);
 				c++;
-			}  
+			}
 		} catch (Exception e) {
-			return Msg.fail().add("va_msg", "ÏµÍ³³ö´í£¡");
+			return Msg.fail().add("va_msg", "æ•°æ®åº“å¼‚å¸¸");
 		}
 		return Msg.success();
 	}

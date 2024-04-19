@@ -13,7 +13,7 @@ public interface EmailService {
 	Email findById(int id);
 
 	void updateManReadById(int id);
-	
+
 	List<EmailData> findByToId(int id);
 
 	List<EmailData> findByUserId(int page,int size,int id,int role,String content,Integer tag);
@@ -23,4 +23,6 @@ public interface EmailService {
 	void updateEmail(Email email1);
 
 	void deleteEmail(int id);
+
+    List<EmailData> findByPage(int page, int PAGESIZE, int id, String content, int role, Integer tag);
 }

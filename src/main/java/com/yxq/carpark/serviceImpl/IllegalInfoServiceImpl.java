@@ -47,4 +47,9 @@ public class IllegalInfoServiceImpl implements IllegalInfoService {
 		return illegalInfoDao.findByCardnumParkin(cardNum,parkin);
 	}
 
+	@Override
+	public List<IllegalInfo> findAllByCardName(String cardnum) {
+		return illegalInfoDao.findAllByCardName(cardnum);
+	}
+
 }
