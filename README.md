@@ -25,6 +25,8 @@
 新背景图片链接为
 https://static.vecteezy.com/system/resources/previews/001/437/687/original/empty-car-parking-isometric-design-free-vector.jpg
 
+出库时提示停车时长 以日/时/分/秒
+
 请在管理员界面的导出功能模块中进行以下设置：
 1.设置收费时 在对应收费栏中虚影显示当前设置的金额
 2.设计两行 第一行有两个饼状图 按近七天收入方式和收入来源画饼图
