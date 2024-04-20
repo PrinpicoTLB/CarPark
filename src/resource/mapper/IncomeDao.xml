@@ -60,6 +60,18 @@
 		and i.method=#{num}
 		</if>
 	</select>
+	<select id="findPayByType2" resultType="java.lang.Integer">
+		select sum(money) from income i where i.method=#{method} and i.time &gt; #{startTime} and i.time &lt; #{endTime}
+	</select>
+
+	<select id="findSourceByType" resultType="java.lang.Integer">
+		select sum(money) from income i where i.source=#{source} and i.time &gt; #{startTime} and i.time &lt; #{endTime}
+	</select>
+	<select id="findDailyIncome" resultType="java.lang.Integer">
+		SELECT SUM(money)
+		FROM income
+		WHERE time BETWEEN #{startOfDay} AND #{endOfDay}
+	</select>
 	<update id="updateCardnum">
 		update income set cardnum=#{cardnumNew} where cardnum=#{cardnum}
 	</update>

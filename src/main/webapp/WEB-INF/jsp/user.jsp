@@ -47,7 +47,7 @@
 	</tr>
 	<c:forEach items="${users.pages }" var="item" varStatus="status">
 		<tr>
-			<td>${status.index+1 }</td>
+			<td>${(users.current * 10) + status.index+1 }</td>
 			<td>${item.username }</td>
 			<td>${item.name }</td>
 			<td>${item.sex }</td>

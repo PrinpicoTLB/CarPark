@@ -54,7 +54,7 @@
 				</tr>
 				<c:forEach items="${emails.pages }" var="item" varStatus="status">
 					<tr>
-						<td>${status.index+1 }</td>
+						<td>${emails.current * 10 + status.index+1 }</td>
 						<td>${item.sendUsername }</td>
 						<td>${item.toUsername==''?'管理员':item.toUsername }</td>
 						<td>${item.title }</td>
@@ -65,7 +65,7 @@
 					</c:forEach>
 			</table>
 			<ul class="pagination">
-				
+
 				<li><a href="${APP_PATH }/index/findAllEmail?page=${emails.current}&&tag=${tag}"
 				target="main"
 					onclick="$('div#main').load(this.href);return false;">&laquo;</a></li>
@@ -86,7 +86,7 @@
 <script type="text/javascript">
 	function addEmail()
 	{
-		var html = 
+		var html =
 				"<label>标题：</label><div style=\"width: 30%;\">"
 				+ "<div class=\"input-group\">"
 				+ "<input id=\"title\"  name=\"title\" placeholder=\"请输入标题\" type=\"text\" class=\"form-control\">"
@@ -103,11 +103,11 @@
 		$(".modal-body").append(html);
 		$("#myModal").modal('show');
 	}
-	
-	
+
+
 	/* 信息提交*/
 	function addEmailSubmit()
-	{	
+	{
 		var title=$("#title").val();
 		var content=$("#textcontent").val();
 		if(title=="")
@@ -137,9 +137,9 @@
 					$("#myModal").modal('hide');
 					}
 			}
-		}) 
+		})
 	}
-	
+
 	function findDetail(item)
 	{
 		 $.ajax({
@@ -177,10 +177,10 @@
 					$("#myModal").modal('hide');
 				}
 			}
-		}) 
+		})
 	}
-	
-	
+
+
 	function addEmailRespon(id)
 	{
 		var title=$("#sendtitle").val();
@@ -189,7 +189,7 @@
 			+ "<input id=\"title\" name=\"title\" value=\""+"回复："+title+"\" type=\"text\" class=\"form-control\" readonly  unselectable=\"on\">"
 			+ "</div>"
 			+ "</div>"
-			+"<input id=\"id\" name=\"id\" value="+id+" hidden=\"hidden\"/>" 
+			+"<input id=\"id\" name=\"id\" value="+id+" hidden=\"hidden\"/>"
 			+"<label>内容：</label><div style=\"width: 30%;\">"
 			+ "<div class=\"input-group\">"
 			+ "<textarea id=\"textcontent\" name=\"content\" placeholder=\"请输入内容\" type=\"text\" class=\"form-control\" ></textarea>"
@@ -201,7 +201,7 @@
 			$("#checkSubmit").html("发送");
 			$("#checkSubmit").attr("onclick","responEmailSubmit()");
 	}
-	
+
 	function responEmailSubmit()
 	{
 		var content=$("#textcontent").val();
@@ -236,9 +236,9 @@
 		$("#checkSubmit").html("删除");
 		$("#checkSubmit").attr("onclick","deleteEmailSubmit("+item+")");
 		$(".modal-body").append(html);
-		$("#myModal").modal('show'); 
+		$("#myModal").modal('show');
 	}
-	
+
 	function deleteEmailSubmit(item)
 	{
 		$.ajax({
@@ -261,7 +261,7 @@
 			}
 		})
 	}
-	
+
 	function findByContent()
 	{
 		var content=$("#content").val();

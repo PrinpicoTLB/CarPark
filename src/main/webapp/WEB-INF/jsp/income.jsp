@@ -63,12 +63,9 @@
 					<th>违规</th>
 					<td>操作</td>
 				</tr>
-<%--		        <tbody id="incomeTable" data-items="${incomes.pages }">--%>
-<%--		            <!-- 表格行将在这里动态生成 -->--%>
-<%--		        </tbody>--%>
 				<c:forEach items="${incomes.pages }" var="item" varStatus="status">
 					<tr>
-						<td>${status.index+1 }</td>
+						<td>${incomes.current * 10  + status.index+1 }</td>
 						<td>${item.carnum }</td>
 						<td>${item.cardnum }</td>
 						<td>${item.money }</td>

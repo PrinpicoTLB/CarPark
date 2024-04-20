@@ -21,4 +21,10 @@ public interface IncomeService {
 	List<IncomeData> findAllIncome(String content, String startTime, String endTime, Integer num);
 
 	int findPayByType(int type);
+
+    int findSourceByType(String nowFormat, String weekAgoFormat, int i);
+
+	int findPayByType2(String nowFormat, String weekAgoFormat, int i);
+
+    int findDailyIncome(String start, String formattedDate);
 }

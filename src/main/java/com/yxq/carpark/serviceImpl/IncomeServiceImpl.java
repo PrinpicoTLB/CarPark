@@ -47,4 +47,22 @@ public class IncomeServiceImpl implements IncomeService {
 		return incomeDao.findPayByType(type);
 	}
 
+	@Override
+	public int findSourceByType(String nowFormat, String weekAgoFormat, int i) {
+		Integer result = incomeDao.findSourceByType(nowFormat,weekAgoFormat,i);
+		return result != null ? result : 0;
+	}
+
+	@Override
+	public int findPayByType2(String nowFormat, String weekAgoFormat, int i) {
+		Integer result = incomeDao.findPayByType2(nowFormat, weekAgoFormat, i);
+		return result != null ? result : 0;
+	}
+
+	@Override
+	public int findDailyIncome(String start, String end) {
+		Integer result = incomeDao.findDailyIncome(start, end);
+		return result != null ? result : 0;
+	}
+
 }

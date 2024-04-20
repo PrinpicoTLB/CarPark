@@ -34,11 +34,11 @@
 				</tr>
 				<c:forEach items="${depotcardManagerDatas.pages }" var="item" varStatus="status">
 					<tr>
-						<td>${status.index+1 }</td>
+						<td>${depotcardManagerDatas.current * 10  + status.index+1 }</td>
 						<td id="alert_cardnum${status.count}">${item.cardnum }</td>
 						<td>${item.type }</td>
 						<td>${item.money }</td>
-						<td>${item.username }</td> 	
+						<td>${item.username }</td>
 						<td>${item.time }</td>
 						<td>${item.islose==0?"否":"是" }</td>
 						<td><input class="btn btn-default" type="button" onclick="alertCard(${status.count})" value="修改"><c:if test="${sessionScope.user.role!=3 }"><input class="btn btn-default" type="button" onclick="deleteCard(${status.count})" value="删除"></c:if></td>
@@ -46,7 +46,7 @@
 					</c:forEach>
 			</table>
 			<ul class="pagination">
-				
+
 				<li><a href="${APP_PATH }/index/toDepotcardIndex?tag=${depotcardManagerDatas.tag}&&page=${depotcardManagerDatas.current}&&cardnum=${depotcardManagerDatas.extra}"
 				target="main"
 					onclick="$('div#main').load(this.href);return false;">&laquo;</a></li>
@@ -64,7 +64,7 @@
 					onclick="$('div#main').load(this.href);return false;">&raquo;</a></li>
 				</c:if>
 			</ul>
-			
+
 <script type="text/javascript">
 /* 添加停车卡模态框显示*/
 function addDepotCard() {
@@ -108,7 +108,7 @@ function addDepotCard() {
 	$("#myModal").modal('show');
 				}
 		}
-	}) 
+	})
 }
 
 /* 添加停车卡付款 */
@@ -186,7 +186,7 @@ function findDepotcardByCardnum()
 	var cardnum=$("#cardnum2").val();
 			$("#findDepotcard").attr("href","${APP_PATH }/index/toDepotcardIndex?cardnum="+cardnum);
 			$("#findDepotcard").click();
-	
+
 }
 
 /* 修改模态框显示*/
@@ -209,7 +209,7 @@ function alertCard(status) {
 					}
 	var html = // 用什么方式支付（0现金，1支付宝，2微信，9从卡中扣费）
 			"<input id=\"alertpayid\" name=\"alertpayid\" value=\""+9+"\" hidden=\"hidden\"/>"
-			// 需要支付金额 
+			// 需要支付金额
 			+"<input id=\"alertpay_money\" name=\"alertpay_money\" value=\""+0+"\" hidden=\"hidden\"/>"
 			// 扣费还是月卡或年卡未到期 (0扣费，1不用扣费，9付钱)
 			+"<input id=\"alertpay_type\" name=\"alertpay_type\" value=\""+9+"\" hidden=\"hidden\"/>"
@@ -241,15 +241,15 @@ function alertCard(status) {
 	}
 	$("#checkSubmit").attr("onclick","isAlertType()");
 	$(".modal-body").append(html);
-	$("#myModal").modal('show'); 
+	$("#myModal").modal('show');
 	$("#type").val(data.extend.cardType.id);
 	$("#islose").val(data.extend.depotcard.islose);
 		}
 	$("#findDepotcard").attr("href","${APP_PATH }/index/toDepotcardIndex");
 	$("#findDepotcard").click();
 		}
-		
-	}) 
+
+	})
 }
 
 //提交更换丢失的卡号
@@ -270,7 +270,7 @@ function changeLoseCardSubmit()
 				}else{
 				alert("系统错误！");
 				}
-			
+
 		}
 	})
 }
@@ -346,7 +346,7 @@ function deleteCard(status) {
 	$("#checkSubmit").html("删除");
 	$("#checkSubmit").attr("onclick","deleteDepotCardSubmit("+status+")");
 	$(".modal-body").append(html);
-	$("#myModal").modal('show'); 
+	$("#myModal").modal('show');
 }
 
 /* 删除停车卡提交 */

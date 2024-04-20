@@ -278,7 +278,18 @@ public class CheckController {
 			e.printStackTrace();
 			return Msg.fail().add("va_msg", "数据库异常，请重试");
 		}
-		return Msg.success().add("va_msg", "提价成功");
+		return Msg.success().add("va_msg", "提交成功");
+	}
+
+	private String formatTime(long duration) {
+		long seconds = duration / 1000;
+		long days = seconds / (24 * 3600);
+		long hours = (seconds % (24 * 3600)) / 3600;
+		long minutes = (seconds % 3600) / 60;
+		long secs = seconds % 60;
+
+		String formattedDuration = days + "天" + hours + "时" + minutes + "分" + secs + "秒";
+		return formattedDuration;
 	}
 
 	/* 是否已经支付
@@ -314,7 +325,10 @@ public class CheckController {
 			if(day%(1000*60*60)>0){
 			time+=1;
 			}
-			return Msg.success().add("money_pay", time*Constants.TEMPMONEY+illegalmoney).add("va_msg", "违规信息"+(illegalmoney>0? ",原因"+illegalInfo.getIllegalInfo():""));
+			String parkTime = formatTime(time);
+			return Msg.success().add("money_pay", time*Constants.TEMPMONEY+illegalmoney)
+					.add("va_msg", "违规信息"+(illegalmoney>0? ",原因"+illegalInfo.getIllegalInfo():""))
+					.add("park_time", parkTime);
 		}
 		String cardnum=parkInfo.getCardnum();
 		Depotcard depotcard=depotcardService.findByCardnum(cardnum);
@@ -335,11 +349,18 @@ public class CheckController {
 			if(day%(1000*60*60)>0){
 			time+=1;
 			}
+			String parkTime = formatTime(day);
+			System.out.println("本次停车时间:" + parkTime + ", time: " + day);
 			if(balance+money-illegalmoney<time*Constants.HOURMONEY)
 			{
-			return Msg.success().add("money_pay", time*Constants.HOURMONEY+illegalmoney-money-balance).add("va_msg", "余额不足"+(illegalmoney>0? ",违规原因"+illegalInfo.getIllegalInfo():""));
+				String igllInfo= illegalInfo == null ? "" : ",违规原因: " + illegalInfo.getIllegalInfo();
+			return Msg.success().add("money_pay", time*Constants.HOURMONEY+illegalmoney-money-balance)
+					.add("va_msg", "余额不足"+(illegalmoney>0 ? igllInfo:""))
+					.add("park_time", parkTime);
 			}else{
-			return Msg.fail().add("type", 0).add("money_pay", time*Constants.HOURMONEY+illegalmoney-money).add("va_msg", "账户支付自动成功");
+			return Msg.fail().add("type", 0).add("money_pay", time*Constants.HOURMONEY+illegalmoney-money)
+					.add("va_msg", "账户支付自动成功")
+					.add("park_time", parkTime);
 			}
 		}
 		Date deductedtime=depotcard.getDeductedtime();
@@ -356,7 +377,8 @@ public class CheckController {
 		// 会员尚未到期，直接返回
 		if(time<1)
 		{
-			return Msg.fail().add("type", 1).add("va_msg", "会员未到期，直接返回");
+			String parkTime = formatTime(day);
+			return Msg.fail().add("type", 1).add("va_msg", "会员未到期，直接返回").add("park_time", parkTime);
 		}else{
 			// 检查停车时间是否足够久，如果不够可能需要现金扫码
 			double balance=depotcard.getMoney();
@@ -372,11 +394,15 @@ public class CheckController {
 			if(day%(1000*60*60)>0){
 			time+=1;
 			}
+			String parkTime = formatTime(day);
 			if(balance+money-illegalmoney<time*Constants.HOURMONEY)
 			{
-			return Msg.success().add("money_pay", time*Constants.HOURMONEY+illegalmoney-money-balance).add("va_msg", "余额不足"+(illegalmoney>0? ",违规原因"+illegalInfo.getIllegalInfo():""));
+				String igllInfo= illegalInfo == null ? "" : ",违规原因: " + illegalInfo.getIllegalInfo();
+			return Msg.success().add("money_pay", time*Constants.HOURMONEY+illegalmoney-money-balance)
+					.add("va_msg", "余额不足 "+(illegalmoney>0 ? igllInfo:""))
+					.add("park_time", parkTime);
 			}else{
-			return Msg.fail().add("type", 0).add("va_msg", "账户支付自动成功");
+			return Msg.fail().add("type", 0).add("va_msg", "账户支付自动成功").add("park_time", parkTime);
 			}
 		}
 	}

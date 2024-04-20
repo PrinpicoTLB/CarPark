@@ -11,10 +11,10 @@
 					<div class="col-lg-6" style="width: 30%; float: left;">
 						<div class="input-group">
 							<c:if test="${sessionScope.user.role!=3 }">
-							<input id="name" placeholder="优惠券号/停车卡号" type="text" class="form-control" > 
+							<input id="name" placeholder="优惠券号/停车卡号" type="text" class="form-control" >
 							</c:if>
 							<c:if test="${sessionScope.user.role==3 }">
-							<input id="name" placeholder="优惠券号" type="text" class="form-control" > 
+							<input id="name" placeholder="优惠券号" type="text" class="form-control" >
 							</c:if>
 							<span
 								class="input-group-btn">
@@ -39,7 +39,7 @@
 				</tr>
 				<c:forEach items="${couponDatas.pages }" var="item" varStatus="status">
 					<tr>
-						<td>${status.index+1 }</td>
+						<td>${couponDatas.current * 10  + status.index+1 }</td>
 						<td>${item.couponNum }</td>
 						<td>${item.money }</td>
 						<td>${item.cardnum }</td>
@@ -49,7 +49,7 @@
 					</c:forEach>
 			</table>
 			<ul class="pagination">
-				
+
 				<li><a href="${APP_PATH }/index/findAllCoupon?page=${couponDatas.current}&&name=${couponDatas.extra}"
 				target="main"
 					onclick="$('div#main').load(this.href);return false;">&laquo;</a></li>
@@ -67,16 +67,16 @@
 					onclick="$('div#main').load(this.href);return false;">&raquo;</a></li>
 				</c:if>
 			</ul>
-			
+
 <script type="text/javascript">
 	function findCouponByName()
 	{
 		var name=$("#name").val();
 				$("#findAllCoupon").attr("href","${APP_PATH }/index/findAllCoupon?name="+name);
 				$("#findAllCoupon").click();
-		
+
 	}
-	
+
 	//查看详情
 	function findCouponById(item){
 		$.ajax({
@@ -114,7 +114,7 @@
 			}
 		})
 	}
-	
+
 	/* 删除违规模态框显示*/
 	function deleteCouponInfo(item) {
 		var html = "<label>确认删除该优惠券吗？</label><div style=\"width: 30%;\">";
@@ -122,7 +122,7 @@
 		$("#checkSubmit").html("删除");
 		$("#checkSubmit").attr("onclick","deleteCoupon("+item+")");
 		$(".modal-body").append(html);
-		$("#myModal").modal('show'); 
+		$("#myModal").modal('show');
 	}
 		//删除优惠券
 	function deleteCoupon(item)
@@ -142,11 +142,11 @@
 					}else{
 						return false;
 					}
-				
+
 			}
 		})
 	}
-		
+
 		function addCoupon()
 		{
 			var html = "<label>优惠券金额：</label><div style=\"width: 30%;\">"
@@ -164,7 +164,7 @@
 				$(".modal-body").append(html);
 				$("#myModal").modal('show');
 		}
-		
+
 		function addCouponSubmit()
 		{
 			$.ajax({

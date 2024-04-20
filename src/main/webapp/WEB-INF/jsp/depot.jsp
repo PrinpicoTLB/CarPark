@@ -35,7 +35,7 @@
 				</tr>
 				<c:forEach items="${parkinfoallDatas.pages }" var="item" varStatus="status">
 					<tr>
-						<td>${status.index+1 }</td>
+						<td>${parkinfoallDatas.current * 10  + status.index+1 }</td>
 						<td>${item.parknum }</td>
 						<td>${item.cardnum }</td>
 						<td>${item.carnum }</td>
@@ -46,8 +46,8 @@
 					</c:forEach>
 			</table>
 			<ul class="pagination">
-				
-				<li><a href="${APP_PATH }/index/findAllDepot?tag=${parkinfoallDatas.tag}&&page=${parkinfoallDatas.current}&&name=${parkinfoallDatas.extra}" 
+
+				<li><a href="${APP_PATH }/index/findAllDepot?tag=${parkinfoallDatas.tag}&&page=${parkinfoallDatas.current}&&name=${parkinfoallDatas.extra}"
 				target="main"
 					onclick="$('div#main').load(this.href);return false;">&laquo;</a></li>
 				<li><a href="${APP_PATH }/index/findAllDepot?tag=${parkinfoallDatas.tag}&&page=${parkinfoallDatas.current+1}&&name=${parkinfoallDatas.extra}"
@@ -106,13 +106,13 @@
 			}
 		})
 	}
-	
-	
+
+
 	function findDepotNum()
 	{
 		var number=$("#number").val();
 				$("#findAllDepot").attr("href","${APP_PATH }/index/findAllDepot?name="+number);
 				$("#findAllDepot").click();
-		
+
 	}
 </script>

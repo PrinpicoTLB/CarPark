@@ -2,13 +2,16 @@ package com.yxq.carpark.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.yxq.carpark.entity.*;
 import com.yxq.carpark.vo.IncomeDataVo;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.PieChart;
@@ -43,13 +46,6 @@ import com.yxq.carpark.dto.DepotcardManagerData;
 import com.yxq.carpark.dto.EmailData;
 import com.yxq.carpark.dto.IncomeData;
 import com.yxq.carpark.dto.ParkinfoallData;
-import com.yxq.carpark.entity.DepotInfo;
-import com.yxq.carpark.entity.Depotcard;
-import com.yxq.carpark.entity.IllegalInfo;
-import com.yxq.carpark.entity.IncomeCharts;
-import com.yxq.carpark.entity.NowParkspace;
-import com.yxq.carpark.entity.ParkSpace;
-import com.yxq.carpark.entity.User;
 import com.yxq.carpark.service.CouponService;
 import com.yxq.carpark.service.DepotInfoService;
 import com.yxq.carpark.service.DepotcardService;
@@ -199,6 +195,7 @@ public class IndexController {
 		pageUtil.setPage(page + 1);
 		pageUtil.setCount(count);
 		pageUtil.setPages(users);
+		pageUtil.setCurrent(page);
 		model.addAttribute("users", pageUtil);
 		return "user";
 	}
@@ -521,6 +518,7 @@ public class IndexController {
 		int count =0;
 		int countPage=0;
 		User user1 = (User) session.getAttribute("user");
+
 		if (user1.getRole()==1||user1.getRole()==2) {
 			//emails=emailService.findByToId(1);
 			emails = emailService.findByPage(page*10, Constants.PAGESIZE,1, content, user1.getRole(), tag);
@@ -605,7 +603,67 @@ public class IndexController {
 		return incomeCharts;
 	}
 
-	//ͣ�����
+	@ResponseBody
+	@RequestMapping("/index/incomeCharts2")
+	public IncomeCharts incomeCharts2()
+	{
+		// 获取当前时间和7天前
+		LocalDateTime now = LocalDateTime.now();
+		String nowFormat = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		LocalDateTime weekAgo = now.minusDays(7);
+		String weekAgoFormat = weekAgo.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		int weixin=incomeService.findPayByType2(weekAgoFormat,nowFormat,0);
+		int zhifubao=incomeService.findPayByType2(weekAgoFormat,nowFormat,1);
+		int cash=incomeService.findPayByType2(weekAgoFormat,nowFormat,2);
+		int card=incomeService.findPayByType2(weekAgoFormat,nowFormat,9);
+		IncomeCharts incomeCharts=new IncomeCharts();
+		incomeCharts.setCash(cash);
+		incomeCharts.setWeixin(weixin);
+		incomeCharts.setZhifubao(zhifubao);
+		incomeCharts.setCard(card);
+		return incomeCharts;
+	}
+
+	@ResponseBody
+	@RequestMapping("/index/incomeSourceCharts")
+	public IncomeCharts incomeSourceCharts()
+	{
+		// 获取当前时间和7天前
+		LocalDateTime now = LocalDateTime.now();
+		String nowFormat = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		LocalDateTime weekAgo = now.minusDays(7);
+		String weekAgoFormat = weekAgo.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		int card=incomeService.findSourceByType(weekAgoFormat,nowFormat,0);
+		int car=incomeService.findSourceByType(weekAgoFormat,nowFormat,1);
+		IncomeCharts incomeCharts=new IncomeCharts();
+		incomeCharts.setCard(card);
+		incomeCharts.setCar(car);
+		return incomeCharts;
+	}
+
+	@ResponseBody
+	@RequestMapping("/index/incomeWeekCharts")
+	public List<IncomeDay> incomeWeekCharts()
+	{
+		LocalDate today = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		List<IncomeDay> weekIncome = new ArrayList<>();
+
+		for (int i = 6; i >= 0; i--) {
+			LocalDate date = today.minusDays(i);
+			LocalDateTime startOfDay = date.atStartOfDay();
+			LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+
+			String start = startOfDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			String end = endOfDay.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+			int dailyIncome = incomeService.findDailyIncome(start, end);
+
+			weekIncome.add(new IncomeDay(date.format(formatter), dailyIncome));
+		}
+		return weekIncome;
+	}
+
 	@ResponseBody
 	@RequestMapping("/index/line1")
 	public NowParkspace line1() {

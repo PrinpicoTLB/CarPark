@@ -301,16 +301,16 @@ th {
 						</h4>
 					</div>
 					<div class="modal-body1">
-					<div id="pay_zfb">
-					<h4>支付宝：<span id="zfb_text"></span>元</h4>
-					<img alt="" style="width: 300px;height: 300px;margin-left: 20%" src="${APP_PATH }/pic/zfb.png">
+					<div id="pay_zfb" >
+					<h5 style="text-align: center">本次停车时长: <span id="park_time"></span> 支付宝: <span id="zfb_text"></span>元</h5>
+					<img alt="" style="width: 300px;height: 300px;margin-left: 25%" src="${APP_PATH }/pic/zfb.png">
 					</div>
 					<div id="pay_wx" hidden="hidden">
-					<h4>微信：<span id="wx_text"></span>元</h4>
-					<img alt="" style="width: 300px;height: 300px;margin-left: 20%" src="${APP_PATH }/pic/wx.png">
+					<h5 style="text-align: center">本次停车时长: <span id="park_time2"></span> 微信: <span id="wx_text"></span>元</h5>
+					<img alt="" style="width: 300px;height: 300px;margin-left: 25%" src="${APP_PATH }/pic/wx.png">
 					</div>
 					<div id="pay_cash" hidden="hidden">
-					<h4>现金：<span id="cash_text"></span>元</h4>
+					<h5 style="text-align: center">本次停车时长: <span id="park_time3"></span> 现金: <span id="cash_text"></span>元</h5>
 					</div>
 					</div>
 					<div class="modal-footer">
@@ -326,6 +326,13 @@ th {
 	<!-- /.modal -->
 </body>
 <script type="text/javascript">
+	let parkTime = ""
+	function setParkTime(parkTime) {
+		this.parkTime = parkTime;
+	}
+	function getParkTime() {
+		return this.parkTime;
+	}
 $(document).ready(function(){
 	var role=$("#role").val();
 	if(role==3)
@@ -511,10 +518,12 @@ $(document).ready(function(){
 			}
 		})
 	}
-	/*显示支付宝支付*/
+
+/*显示支付宝支付*/
 	function pay_zfb()
 	{
 		$("#pay_zfb").show();
+		$("#park_time").text(getParkTime());
 		$("#pay_cash").hide();
 		$("#pay_wx").hide();
 		$("#payid").val(1);
@@ -526,6 +535,7 @@ $(document).ready(function(){
 		$("#pay_cash").hide();
 		$("#pay_zfb").hide();
 		$("#pay_wx").show();
+		$("#park_time2").text(getParkTime());
 		$("#payid").val(2);
 	}
 	/*显示现金支付*/
@@ -534,6 +544,7 @@ $(document).ready(function(){
 		$("#pay_wx").hide();
 		$("#pay_zfb").hide();
 		$("#pay_cash").show();
+		$("#park_time3").text(getParkTime());
 		$("#payid").val(0);
 	}
 	/*是否扫码支付*/
@@ -548,6 +559,8 @@ $(document).ready(function(){
 				if(data.code==100)
 					{
 					$("#myModal1").modal('show');
+					setParkTime(data.extend.park_time);
+					$("#park_time").text(data.extend.park_time);
 					$("#zfb_text").text(data.extend.money_pay);
 					$("#wx_text").text(data.extend.money_pay);
 					$("#cash_text").text(data.extend.money_pay);

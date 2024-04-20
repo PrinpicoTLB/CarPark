@@ -22,4 +22,10 @@ public interface IncomeDao extends BaseDao<Income>{
 	List<IncomeData> findAllIncome1(@Param("content")String content,@Param("startTime")String startTime,@Param("endTime")String endTime,@Param("num")int num);
 
 	int findPayByType(int type);
+
+	Integer findPayByType2(@Param("startTime")String startTime,@Param("endTime")String endTime,@Param("method") int method);
+
+	Integer findSourceByType(@Param("startTime")String startTime,@Param("endTime")String endTime,@Param("source") int source);
+
+	Integer findDailyIncome(@Param("startOfDay") String startOfDay, @Param("endOfDay") String endOfDay);
 }

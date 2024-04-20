@@ -17,14 +17,14 @@
 
    var myChart = echarts.init(document.getElementById('main'));
     // 显示标题，图例和空的坐标轴
- 
+
 			myChart.showLoading();
 			var weixin = 1;//收入
 			var zhifubao = 1;
 			var cash = 1;
 			$.ajax({
 				type : "post",
-		
+
 			url : "${pageContext.request.contextPath}/index/incomeCharts1", //请求发送到TestServlet处
 			data : {},
 			dataType : "json", //返回数据形式为json
@@ -92,7 +92,7 @@
             },
             itemStyle: {
                 normal: {
-          		   color: '#c23531', 
+          		   color: '#c23531',
                     shadowBlur: 200,
                     shadowColor: 'rgba(254, 255, 254, 0.5)'
                 }
@@ -108,7 +108,7 @@
 });
 			}
 			}
-				
+
 			)
 </script>
 </body>

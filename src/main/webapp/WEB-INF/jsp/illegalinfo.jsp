@@ -34,7 +34,7 @@
 				</tr>
 				<c:forEach items="${illegalInfo.pages }" var="item" varStatus="status">
 					<tr>
-						<td>${status.index+1 }</td>
+						<td>${illegalInfo.current * 10 + status.index+1 }</td>
 						<td>${item.cardnum }</td>
 						<td>${item.carnum }</td>
 						<td>${item.formatDate }</td>
@@ -44,7 +44,7 @@
 					</c:forEach>
 			</table>
 			<ul class="pagination">
-				
+
 				<li><a href="${APP_PATH }/index/findAllIllegalinfo?tag=${illegalInfo.tag}&&page=${illegalInfo.current}&&name=${illegalInfo.extra}"
 				target="main"
 					onclick="$('div#main').load(this.href);return false;">&laquo;</a></li>
@@ -62,7 +62,7 @@
 					onclick="$('div#main').load(this.href);return false;">&raquo;</a></li>
 				</c:if>
 			</ul>
-			
+
 <script type="text/javascript">
 	function addIllegal()
 	{
@@ -89,7 +89,7 @@
 		$(".modal-body").append(html);
 		$("#myModal").modal('show');
 	}
-	
+
 	function findCarnum() {
 		var carnum = $("#carNum").val();
 		if (carnum == ""|| carnum==null) {
@@ -115,10 +115,10 @@
 			})
 		}
 	}
-	
+
 	/* 违规提交*/
 	function addIllegalSubmit()
-	{	
+	{
 		var judgecarnum=$("#judgecarnum").val();
 		var carnum=$("#carnum").val();
 		var illegalInfo=$("#illegalInfo").val();
@@ -161,9 +161,9 @@
 					$("#myModal").modal('hide');
 					}
 			}
-		}) 
+		})
 	}
-	
+
 	function findIllegalInfo(item)
 	{
 		$.ajax({
@@ -218,9 +218,9 @@
 		$("#checkSubmit").html("删除");
 		$("#checkSubmit").attr("onclick","deleteIllegalInfoSubmit("+item+")");
 		$(".modal-body").append(html);
-		$("#myModal").modal('show'); 
+		$("#myModal").modal('show');
 	}
-	
+
 	function deleteIllegalInfoSubmit(item)
 	{
 		$.ajax({
@@ -248,6 +248,6 @@
 		var name=$("#name").val();
 				$("#findIllegal").attr("href","${APP_PATH }/index/findAllIllegalinfo?name="+name);
 				$("#findIllegal").click();
-		
+
 	}
 </script>
