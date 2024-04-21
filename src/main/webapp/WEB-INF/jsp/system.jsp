@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/echarts.min.js"></script>
 	<!-- 引入jquery.js -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
+	<script src="${APP_PATH }/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 <a id="exportIncomeA" href=""></a>

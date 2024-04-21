@@ -1,11 +1,11 @@
-// �ں��ʵĵط�����ȫ�ֱ�������������У��
+
 document.addEventListener('DOMContentLoaded', function () {
 
     let validUsername = '';
     let validPassword = '';
     let validPhoneOrEmail = '';
     let validName = '';
-    // ��������֤ͼ���ӳ���ϵ
+
     const inputIconMap = {
         username: 'usernameIcon',
         name: 'nameIcon',
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
         phoneOrEmail: 'phoneOrEmailIcon',
     };
 
-    // �����������֤����
     const inputRegexMap = {
         username: /^(?:[\u4e00-\u9fa5a-zA-Z0-9_]{1,8})$/,
         name: /^[\u4e00-\u9fa5]{2,4}$/,
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         phoneOrEmail: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$|^\d{11}$/,
     };
 
-    // �����ʹ�����Ϣ��ӳ���ϵ
+
     const inputErrorMap = {
         username: 'usernameError',
         name: 'nameError',
@@ -29,20 +28,18 @@ document.addEventListener('DOMContentLoaded', function () {
         phoneOrEmail: 'phoneOrEmailError',
     };
 
-    // ��ʾ������Ϣ
+
     function showError(inputName, errorMessage) {
         const errorElement = document.getElementById(inputErrorMap[inputName]);
         errorElement.textContent = errorMessage;
         errorElement.style.color = '#f00';
     }
 
-    // ���ش�����Ϣ
     function hideError(inputName) {
         const errorElement = document.getElementById(inputErrorMap[inputName]);
         errorElement.textContent = '';
     }
 
-    // ����ע�ᰴť״̬
     function updateRegisterButtonState() {
         // console.log(validPassword + validUsername + validPhoneOrEmail)
         if (validPassword === '' || validUsername === '' || validPhoneOrEmail === '') {
@@ -55,56 +52,53 @@ document.addEventListener('DOMContentLoaded', function () {
         const isValidPhoneOrEmail = inputRegexMap.phoneOrEmail.test(validPhoneOrEmail);
 
         const isValid = isValidUsername && isValidPassword && isValidPhoneOrEmail;
-        console.log('isValid', isValid)
-        // У�����������Ƿ���������������ע�ᰴť״̬
+        //console.log('isValid', isValid)
         document.getElementById('registerBtn').disabled = !isValid;
     }
 
-    // �����û��������ʧȥ�����¼�
     const usernameElement = document.getElementById('username');
     usernameElement.addEventListener('blur', async function () {
         const username = usernameElement.value;
-        console.log(username)
+       // console.log(username)
 
         if (inputRegexMap.username.test(username)) {
             const isExist = await checkUsernameExist(username);
-            console.log('isExist', isExist)
+           // console.log('isExist', isExist)
             if (isExist) {
                 usernameElement.value = "";
                 showError('username', '用户已存在.');
                 //document.getElementById('usernameIcon').className = 'validation-icon invalid';
                 validUsername = '';
-                console.log(validUsername);
+              //  console.log(validUsername);
             } else {
                 hideError('username');
                 //document.getElementById('usernameIcon').className = 'validation-icon valid';
                 validUsername = username;
-                console.log('validUsername', validUsername);
+               // console.log('validUsername', validUsername);
             }
         } else {
             showError('username', "长度在8以内的中英文字符")
             //document.getElementById("usernameIcon").className = 'validation-icon invalid';
             validUsername = '';
-            console.log(validUsername);
+           // console.log(validUsername);
         }
     });
 
-    // �������������ʧȥ�����¼�
     const nameElement = document.getElementById('name');
     nameElement.addEventListener('blur', function () {
         const name = nameElement.value;
-        console.log(name)
+       // console.log(name)
         if (inputRegexMap.name.test(name)) {
             hideError('name');
             //document.getElementById('usernameIcon').className = 'validation-icon valid';
             validName = name;
-            console.log('name', validName);
+        //    console.log('name', validName);
         } else {
             nameElement.value = "";
             showError('name', "请检查格式是否正确")
             //document.getElementById("usernameIcon").className = 'validation-icon invalid';
             validName = '';
-            console.log(name);
+        //    console.log(name);
         }
     });
 
@@ -119,9 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ]);
     };
 
-    // ����û����Ƿ����
     async function checkUsernameExist(username) {
-        //  ���˷������󣬼���û����Ƿ����
         try {
             const response = await fetchWithTimeout("/depot-system/index/user/checkUsername?username=" + encodeURIComponent(username), { method: 'GET' })
             if (!response.ok) {
@@ -130,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             //const response = await fetch("/userName?username=" + encodeURIComponent(username));
             const jsonReadear = await response.json();
-            console.log("response:", jsonReadear);  // ��ӡ������Ӧ��
+            console.log("response:", jsonReadear);
             console.log("code:", jsonReadear.code);
             if (jsonReadear.code === 200) {
                 const isExist = false;
@@ -146,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // ������������������¼�������������ʾ��Ϣ
     const passwordElement = document.getElementById('password');
     const eyeIcon = document.getElementById('togglePassword');
     const eye = document.getElementById('eye');
@@ -156,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const type = passwordElement.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordElement.setAttribute('type', type);
 
-        // �л��۾�ͼ�����ʾ״̬
         eye.style.display = type === 'password' ? 'inline' : 'none';
         eyeSlash.style.display = type === 'password' ? 'none' : 'inline';
     });
@@ -178,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // �����ֻ��Ż����������ʧȥ�����¼�
     const phoneOrEmailElement = document.getElementById('phoneOrEmail');
     phoneOrEmailElement.addEventListener('blur', async function () {
         const phoneOrEmail = phoneOrEmailElement.value;
@@ -205,9 +194,9 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(validPhoneOrEmail);
         }
     });
-    // ����ֻ��Ż������Ƿ���ע��
+
     async function checkPhoneOrEmailExist(phoneOrEmail) {
-        //  ���˷������󣬼���ֻ��Ż������Ƿ���ע��
+
         const phoneRegex = /^1\d{10}$/;
         const qqEmailRegex = /^[1-9]\d{4,10}@qq\.com$/;
         let response;
@@ -217,11 +206,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             if (response && !response.ok) {
                 alert('请求失败，请重试')
-                throw new Error('�����쳣��������һ��');
+                throw new Error('请求失败，请重试');
             }
             //const response = await fetch("/userName?username=" + encodeURIComponent(username));
             const jsonReadear = await response.json();
-            console.log("response:", jsonReadear.code);  // ��ӡ������Ӧ��
+            console.log("response:", jsonReadear.code);
             //console.log("json:", jsonReadear.code);
             if (jsonReadear.code === 200) {
                 const isExist = false;
@@ -237,11 +226,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // ����ע�ᰴť����¼�
+
     document.getElementById('registerBtn').addEventListener('click', async function () {
-        event.preventDefault();  // ��ֹ����Ĭ���ύ��Ϊ
-        // ���˷���ע������ǰ�ٴ���֤����
-        // ��ȡ��ǰ�������ȷ����
+        event.preventDefault();
+
         var validSex = document.getElementById("sex").value;
         const formData = {
             username: validUsername,
@@ -251,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function () {
             sex: validSex,
         };
 
-        // ���˷���ע������
         //const registerResult = await registerUser(formData);
         const resp = await fetch( "/depot-system/index/user/register", {
             method: 'POST',
@@ -260,15 +247,22 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(formData)
         });
-        const response = await resp.text();
-        console.log("response: " + response)
-        window.location.reload();
+        const response = await resp.json();
+        if (response.code === 100) {
+            alert("注册成功");
+            window.location.replace("/depot-system/login");
+        }else {
+            alert("注册失败");
+            window.location.reload();
+        }
+        //console.log("response: " + response)
+        // window.location.reload();
         // then(response => response.json())
         //     .then(data => {
         //         console.log("data: ", data)
         //         if (data.code === 200) {
         //             alert(data.msg);
-        //             window.location.reload(); // ˢ��ҳ��
+        //             window.location.reload();
         //         } else {
         //             alert(data.msg);
         //         }
@@ -279,12 +273,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    // // ���˷���ע������
     // async function registerUser(formData) {
     //
     // }
 
-    // ��ʼ��ʱ����ע�ᰴť״̬
     updateRegisterButtonState();
 
 });

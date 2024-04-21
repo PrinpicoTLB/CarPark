@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.yxq.carpark.entity.*;
+import com.yxq.carpark.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,20 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yxq.carpark.dto.CouponData;
-import com.yxq.carpark.entity.ParkInfo;
 import com.yxq.carpark.dto.DepotcardManagerData;
-import com.yxq.carpark.entity.CardType;
-import com.yxq.carpark.entity.Depotcard;
-import com.yxq.carpark.entity.Income;
-import com.yxq.carpark.entity.User;
-import com.yxq.carpark.service.CardtypeService;
-import com.yxq.carpark.service.CouponService;
-import com.yxq.carpark.service.DepotcardService;
-import com.yxq.carpark.service.IllegalInfoService;
-import com.yxq.carpark.service.IncomeService;
-import com.yxq.carpark.service.ParkinfoService;
-import com.yxq.carpark.service.ParkinfoallService;
-import com.yxq.carpark.service.UserService;
 import com.yxq.carpark.utils.Constants;
 import com.yxq.carpark.utils.Msg;
 
@@ -50,12 +39,15 @@ public class CardController {
 	private IllegalInfoService illegalInfoService;
 	@Autowired
 	private ParkinfoService parkinfoService;
+	@Autowired
+	private DepotInfoService depotInfoService;
 
 	@ResponseBody
 	@RequestMapping("/index/card/findAllCardType")
 	public Msg findAllCardType(){
 		List<CardType> cardTypes=cardtypeService.findAllCardType();
-		return Msg.success().add("cardTypes", cardTypes);
+		DepotInfo depotInfo = depotInfoService.findById(1);
+		return Msg.success().add("cardTypes", cardTypes).add("depotInfo", depotInfo);
 	}
 
 	@ResponseBody
@@ -238,6 +230,11 @@ public class CardController {
 		{
 			depotcardManagerData.setType(Integer.toString(depotcard.getType()));
 		}
+//		if(depotcard.getType() > Integer.parseInt(depotcardManagerData.getType()))
+//		{
+//			return Msg.fail().add("va_msg", "不能降级");
+//
+//		}
 		if(depotcard.getType()!=Integer.parseInt(depotcardManagerData.getType()))
 		{
 			if(Integer.parseInt(depotcardManagerData.getType())>1)

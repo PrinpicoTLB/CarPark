@@ -334,7 +334,7 @@ public class IndexController {
 				count=depotcardService.findAllDepotcardCount(cardnum);
 			} else if (user1.getRole() == 3) {
 				depotcardManagerDatas = depotcardService.findByCardId(user1.getCardid());
-				log.info("停车卡数据：" + depotcardManagerDatas);
+				log.info("停车卡数据：" + depotcardManagerDatas.toString());
 				count=depotcardManagerDatas.size();
 			}
 		}

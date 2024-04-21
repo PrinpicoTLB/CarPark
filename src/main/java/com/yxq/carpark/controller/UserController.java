@@ -92,7 +92,6 @@ public class UserController {
 
 		}
 
-		//�༭user
 		@ResponseBody
 		@RequestMapping("/index/user/editUser")
 		public Msg editUser(User user){
@@ -102,7 +101,7 @@ public class UserController {
 			{
 				user.setRole(temUser.getRole());
 			}
-			user.setPassword(temUser.getPassword());
+//			user.setPassword(temUser.getPassword());
 			user.setCardid(temUser.getCardid());
 			try {
 						userService.update(user);
@@ -112,7 +111,6 @@ public class UserController {
 				return Msg.success().add("va_msg", "更新成功");
 		}
 
-		//ɾ��user
 		@ResponseBody
 		@RequestMapping("/index/user/deleteUser")
 		@Transactional

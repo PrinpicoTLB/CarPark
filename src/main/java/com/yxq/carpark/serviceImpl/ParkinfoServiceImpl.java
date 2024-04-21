@@ -33,7 +33,7 @@ public class ParkinfoServiceImpl implements ParkinfoService {
 		parkinfoDao.deleteParkinfoByParkNum(parkNum);
 	}
 	public ParkInfo findParkinfoByCardnum(String cardnum) {
-		return parkinfoDao.findParkinfoByCardnum2(cardnum);
+		return parkinfoDao.findParkinfoByCardnum(cardnum);
 	}
 	public ParkInfo findParkinfoByCardnum2(String cardnum) {
 		return parkinfoDao.findParkinfoByCardnum2(cardnum);

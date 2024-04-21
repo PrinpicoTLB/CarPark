@@ -302,21 +302,21 @@ th {
 					</div>
 					<div class="modal-body1">
 					<div id="pay_zfb" >
-					<h5 style="text-align: center">本次停车时长: <span id="park_time"></span> 支付宝: <span id="zfb_text"></span>元</h5>
+					<h5 style="text-align: center"><span id="park_time" style="display: none"></span> 支付宝: <span id="zfb_text"></span>元</h5>
 					<img alt="" style="width: 300px;height: 300px;margin-left: 25%" src="${APP_PATH }/pic/zfb.png">
 					</div>
 					<div id="pay_wx" hidden="hidden">
-					<h5 style="text-align: center">本次停车时长: <span id="park_time2"></span> 微信: <span id="wx_text"></span>元</h5>
+					<h5 style="text-align: center">微信: <span id="wx_text"></span>元</h5>
 					<img alt="" style="width: 300px;height: 300px;margin-left: 25%" src="${APP_PATH }/pic/wx.png">
 					</div>
 					<div id="pay_cash" hidden="hidden">
-					<h5 style="text-align: center">本次停车时长: <span id="park_time3"></span> 现金: <span id="cash_text"></span>元</h5>
+					<h5 style="text-align: center">现金: <span id="cash_text"></span>元</h5>
 					</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+						<button type="button" class="btn btn-default" onclick="closeModal()" data-dismiss="modal">关闭
 						</button>
-						<button id="paySubmit" type="button" onclick="" class="btn btn-primary">支付</button>
+						<button id="paySubmit" type="button" onclick="pay()" class="btn btn-primary">支付</button>
 					</div>
 				</div>
 				<!-- /.modal-content -->
@@ -523,7 +523,8 @@ $(document).ready(function(){
 	function pay_zfb()
 	{
 		$("#pay_zfb").show();
-		$("#park_time").text(getParkTime());
+		$("#park_time").css("display", "none");
+		// $("#park_time").text("本次停车时长: " + getParkTime());
 		$("#pay_cash").hide();
 		$("#pay_wx").hide();
 		$("#payid").val(1);
@@ -535,7 +536,8 @@ $(document).ready(function(){
 		$("#pay_cash").hide();
 		$("#pay_zfb").hide();
 		$("#pay_wx").show();
-		$("#park_time2").text(getParkTime());
+		// $("#park_time2").css("display", "inline-block");
+		// $("#park_time2").text(getParkTime());
 		$("#payid").val(2);
 	}
 	/*显示现金支付*/
@@ -544,8 +546,19 @@ $(document).ready(function(){
 		$("#pay_wx").hide();
 		$("#pay_zfb").hide();
 		$("#pay_cash").show();
-		$("#park_time3").text(getParkTime());
+		// $("#park_time3").css("display", "inline-block");
+		// $("#park_time3").text(getParkTime());
 		$("#payid").val(0);
+	}
+	function pay() {
+		$("#park_time").css("display", "none");
+		$("#park_time2").css("display", "none");
+		$("#park_time3").css("display", "none");
+	}
+	function closeModal() {
+		$("#park_time").css("display", "none");
+		$("#park_time2").css("display", "none");
+		$("#park_time3").css("display", "none");
 	}
 	/*是否扫码支付*/
 	function ispay(parknum)
@@ -560,6 +573,8 @@ $(document).ready(function(){
 					{
 					$("#myModal1").modal('show');
 					setParkTime(data.extend.park_time);
+					$("#park_time").css("display", "inline-block");
+					$("#park_time").text("本次停车时长: " + getParkTime());
 					$("#park_time").text(data.extend.park_time);
 					$("#zfb_text").text(data.extend.money_pay);
 					$("#wx_text").text(data.extend.money_pay);
@@ -568,7 +583,11 @@ $(document).ready(function(){
 					alert(data.extend.va_msg);
 					}
 				else{
-					alert(data.extend.money_pay);
+					if (data.extend.money_pay) {
+						alert(data.extend.money_pay);
+					} else {
+						alert(data.extend.va_msg);
+					}
 					$("#pay_type").val(data.extend.type);
 					$("#pay_money").val(data.extend.money_pay);
 					if(data.extend.type==9)

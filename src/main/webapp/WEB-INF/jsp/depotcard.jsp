@@ -67,6 +67,13 @@
 
 <script type="text/javascript">
 /* 添加停车卡模态框显示*/
+let depotInfo;
+function setDepotInfo(data) {
+	this.depotInfo = data;
+}
+function getDepotInfo() {
+	return this.depotInfo;
+}
 function addDepotCard() {
 	$.ajax({
 		type:'get',
@@ -74,6 +81,7 @@ function addDepotCard() {
 		datatype:'json',
 		data:'',
 		success:function(data){
+			setDepotInfo(data.extend.depotInfo);
 			debugger;
 			var option="";
 			if(data.code==100)
@@ -118,6 +126,7 @@ function addDepotCardPay()
 	var name=$("#name").val();
 	var money=$("#money").val();
 	var type=$("#type").val();
+	const depotInfo = getDepotInfo();
 	if(username.trim()=="")
 		{
 		alert("用户手机不能为空！");
@@ -135,19 +144,19 @@ function addDepotCardPay()
 	}
 	if(type==2)
 	{
-		if(money<1920)
+		if(money != depotInfo.monthcard)
 			{
-			alert("月卡扣费为1920，金额需要大于1920.");
+			alert("月卡为" + depotInfo.monthcard +"元，请重新输入.");
 			return false;
 			}
 	}
 	if(type==3)
 	{
-		if(money<21120)
-		{
-		alert("年卡扣费为21120，金额需要大于21120.");
-		return false;
-		}
+		if(money != depotInfo.yearcard)
+			{
+			alert("年卡为" + depotInfo.yearcard +"元，请重新输入.");
+			return false;
+			}
 	}
 	$("#pay_zfb").click();
 	$("#myModal1").modal('show');
@@ -285,6 +294,10 @@ function isAlertType(){
 		data:$("#checkForm").serializeArray(),
 		contentType:'application/x-www-form-urlencoded',
 		success:function(data){
+			// if (data.extend.va_msg) {
+			// 	alert(data.extend.va_msg);
+			// 	return;
+			// }
 			if(data.code==100)
 				{
 				if(data.extend.money_pay==0)

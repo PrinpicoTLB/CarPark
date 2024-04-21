@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.yxq.carpark.entity.*;
+import com.yxq.carpark.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,20 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yxq.carpark.dto.CouponData;
 import com.yxq.carpark.dto.FormData;
-import com.yxq.carpark.entity.Depotcard;
-import com.yxq.carpark.entity.IllegalInfo;
-import com.yxq.carpark.entity.Income;
-import com.yxq.carpark.entity.ParkInfo;
-import com.yxq.carpark.entity.Parkinfoall;
-import com.yxq.carpark.entity.User;
-import com.yxq.carpark.service.CouponService;
-import com.yxq.carpark.service.DepotcardService;
-import com.yxq.carpark.service.IllegalInfoService;
-import com.yxq.carpark.service.IncomeService;
-import com.yxq.carpark.service.ParkinfoService;
-import com.yxq.carpark.service.ParkinfoallService;
-import com.yxq.carpark.service.ParkspaceService;
-import com.yxq.carpark.service.UserService;
 import com.yxq.carpark.utils.Constants;
 import com.yxq.carpark.utils.Msg;
 
@@ -56,6 +44,8 @@ public class CheckController {
 	private IncomeService incomeService;
 	@Autowired
 	private CouponService couponService;
+	@Autowired
+	private DepotInfoService depotInfoService;
 
 	static int i=0;
 	@RequestMapping("/index/check/checkIn")
@@ -186,7 +176,6 @@ public class CheckController {
 
 	@RequestMapping("/index/check/findParkinfoByCardnum")
 	@ResponseBody
-
 	public Msg findParkinfoByCardnum(@RequestParam("cardnum") String cardnum) {
 		ParkInfo parkInfo = parkinfoservice.findParkinfoByCardnum(cardnum);
 		//System.out.println("ello"+parkInfo.getId());
@@ -300,6 +289,7 @@ public class CheckController {
 	public Msg ispay(@RequestParam("parknum") Integer parknum)
 	{
 		ParkInfo parkInfo=parkinfoservice.findParkinfoByParknum(parknum.intValue());
+		DepotInfo depotInfo = depotInfoService.findById(1);
 		Date date=new Date();
 		Date parkin;
 		long time=0;
@@ -351,14 +341,14 @@ public class CheckController {
 			}
 			String parkTime = formatTime(day);
 			System.out.println("本次停车时间:" + parkTime + ", time: " + day);
-			if(balance+money-illegalmoney<time*Constants.HOURMONEY)
+			if(balance+money-illegalmoney<time*depotInfo.getHourmoney())
 			{
 				String igllInfo= illegalInfo == null ? "" : ",违规原因: " + illegalInfo.getIllegalInfo();
-			return Msg.success().add("money_pay", time*Constants.HOURMONEY+illegalmoney-money-balance)
+			return Msg.success().add("money_pay", time*depotInfo.getHourmoney()+illegalmoney-money-balance)
 					.add("va_msg", "余额不足"+(illegalmoney>0 ? igllInfo:""))
 					.add("park_time", parkTime);
 			}else{
-			return Msg.fail().add("type", 0).add("money_pay", time*Constants.HOURMONEY+illegalmoney-money)
+			return Msg.fail().add("type", 0).add("money_pay", time*depotInfo.getHourmoney()+illegalmoney-money)
 					.add("va_msg", "账户支付自动成功")
 					.add("park_time", parkTime);
 			}
@@ -378,7 +368,7 @@ public class CheckController {
 		if(time<1)
 		{
 			String parkTime = formatTime(day);
-			return Msg.fail().add("type", 1).add("va_msg", "会员未到期，直接返回").add("park_time", parkTime);
+			return Msg.fail().add("type", 1).add("va_msg", "会员用户，无需扣费").add("park_time", parkTime);
 		}else{
 			// 检查停车时间是否足够久，如果不够可能需要现金扫码
 			double balance=depotcard.getMoney();
@@ -395,10 +385,10 @@ public class CheckController {
 			time+=1;
 			}
 			String parkTime = formatTime(day);
-			if(balance+money-illegalmoney<time*Constants.HOURMONEY)
+			if(balance+money-illegalmoney<time*depotInfo.getHourmoney())
 			{
 				String igllInfo= illegalInfo == null ? "" : ",违规原因: " + illegalInfo.getIllegalInfo();
-			return Msg.success().add("money_pay", time*Constants.HOURMONEY+illegalmoney-money-balance)
+			return Msg.success().add("money_pay", time*depotInfo.getHourmoney()+illegalmoney-money-balance)
 					.add("va_msg", "余额不足 "+(illegalmoney>0 ? igllInfo:""))
 					.add("park_time", parkTime);
 			}else{
