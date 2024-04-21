@@ -165,7 +165,7 @@
 						tooltip: {
 							trigger: 'axis',
 							axisPointer: {
-								type: 'shadow'
+								type: 'none'
 							}
 						},
 						xAxis: {
