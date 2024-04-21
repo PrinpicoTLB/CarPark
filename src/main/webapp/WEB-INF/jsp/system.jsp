@@ -19,10 +19,19 @@
 	<button class="btn btn-default" onclick="setCharge()" type="button">设置收费</button>
 <div style="display: flex; flex-direction: column; background-color: #2c343c; width: 97%; height: 1000px; margin-left: 20px; margin-top: 15px;">
 	<div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-		<div id="outIncomeChart" style="width: 40%; height: 450px;"></div>
-		<div id="sourceIncomeChart" style="width: 40%; height: 450px;"></div>
+		<div style="width: 40%; height: 450px;">
+			<div id="outIncomeChart" style="height: 400px"></div>
+			<div id="outIncomeChartLegend" style="text-align: center"></div>
+		</div>
+		<div style="width: 40%; height: 450px;">
+			<div id="sourceIncomeChart" style="height: 400px;"></div>
+			<div id="sourceIncomeChartLegend" style="text-align: center;"></div>
+		</div>
 	</div>
-	<div id="dailyIncomeChart" style="width: 100%; height: 500px;"></div>
+	<div style="width: 100%; height: 500px;">
+		<div id="dailyIncomeChart" style="height: 450px;"></div>
+		<div id="dailyIncomeChartLegend" style="text-align: center;"></div>
+	</div>
 </div>
 
 </body>
@@ -111,6 +120,13 @@
 						}
 					]
 				});
+				// 添加颜色图例
+				var legendId = chartId + 'Legend';
+				var legendHtml = data.map(function(value, index) {
+					console.log('Data Name:', dataNames[index]);
+					return '<span style="display:inline-block;margin-right:10px;"><span style="background-color:' + colors[index % colors.length] + ';width:12px;height:12px;display:inline-block;border-radius:50%;margin-right:5px;"></span><span style="color: ' + colors[index % colors.length] + ';">' + dataNames[index] + '</span></span>';
+				}).join('');
+				document.getElementById(legendId).innerHTML = legendHtml;
 			}
 		});
 	}
@@ -125,7 +141,7 @@
 			data: {},
 			dataType: "json",
 			success: function(result) {
-				console.log("result: ", result)
+				// console.log("result: ", result)
 				if (result) {
 					// 准备X轴和Y轴的数据
 					var xData = [];
@@ -203,6 +219,11 @@
 						}]
 					});
 				}
+				// 添加颜色图例
+				var legendId = chartId + 'Legend';
+				var legendHtml = '<span style="display:inline-block;margin-right:10px;">' +
+						'<span style="background-color:#c4ccd3;width:12px;height:12px;display:inline-block;border-radius:50%;margin-right:5px;"></span><span style="color:#c4ccd3;">每日收入</span></span>';
+				document.getElementById(legendId).innerHTML = legendHtml;
 			}
 		});
 	}
